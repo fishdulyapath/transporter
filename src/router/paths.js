@@ -19,12 +19,12 @@ export default [
     component: () => import("../pages/Dashboard.vue"),
   },
   {
-    path: "/pricelist",
-    name: "price_list",
+    path: "/transporterdetail/:id",
+    name: "transporter_detail",
     meta: {
       auth: true,
     },
-    component: () => import("../pages/PriceList.vue"),
+    component: () => import("../pages/transport/TransportForm.vue"),
   },
   {
     path: "/salepricelist",

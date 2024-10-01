@@ -11,6 +11,8 @@ import XLSX from "xlsx";
 
 const storeApp = useApp();
 
+const router = useRouter();
+
 const data_brand = ref([]);
 const data_category = ref([]);
 const data_design = ref([]);
@@ -168,7 +170,9 @@ const getStatusSeverity = (status) => {
       return null;
   }
 };
-
+function goToCreate() {
+  router.push({ name: "transporter_detail", params: { id: 'new' } });
+}
 
 async function getMasterData() {
 
@@ -370,7 +374,7 @@ function exportExcel() {
 
               <div class="field col-12">
                 <Button label="ค้นหา" icon="pi pi-play" class="w-auto p-button-info"></Button>
-                <Button label="สร้างเอกสารใหม่" icon="pi pi-plus" class="w-auto p-button-success ml-2" ></Button>
+                <Button label="สร้างเอกสารใหม่" icon="pi pi-plus" class="w-auto p-button-success ml-2" @click="goToCreate"></Button>
                 
               </div>
             </div>
