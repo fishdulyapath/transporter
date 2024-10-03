@@ -203,33 +203,93 @@ function confirmImport() {
         <div class="surface-card shadow-2 border-round p-fluid mt-2 p-4" id="boxupdate">
           <div class="grid formgrid p-fluid">
             <div class="field mb-4 col-12 md:col-3">
-              <label class="font-medium text-900">เลขที่เอกสาร</label>
-              <InputText type="text" v-model="doc_no" readonly />
+              <label class="font-medium text-900">ใบปฏิบ้ติงาน</label>
+              <InputText type="text" readonly />
             </div>
             <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">วันที่</label>
-              <InputText v-model="doc_date" readonly />
+              <InputText readonly />
             </div>
             <div class="field mb-4 col-12 md:col-3">
-              <label class="font-medium text-900">ผู้จัดทำ</label>
-              <InputText type="text" v-model="creator_code" readonly />
+              <label class="font-medium text-900">ทะเบียนรถ</label>
+              <InputText type="text" readonly />
             </div>
             <div class="field mb-4 col-12 md:col-3">
-              <label class="font-medium text-900">หมายเหตุ</label>
-              <InputText type="text" v-model="remark" readonly />
+              <label class="font-medium text-900">วันที่กลับ</label>
+              <InputText type="text" readonly />
             </div>
-            <div class="field col-12">
-              <Button label="ปรับใช้ราคา" icon="pi pi-play" class="w-auto p-button-success" @click="confirmImport" v-if="import_data.length > 0"></Button>
+            <div class="field mb-4 col-12 md:col-3">
+              <label class="font-medium text-900">คนขับ1</label>
+              <InputText type="text" readonly />
+            </div>
+            <div class="field mb-4 col-12 md:col-3">
+              <label class="font-medium text-900">คนขับ2</label>
+              <InputText type="text" readonly />
             </div>
           </div>
-
           <TabView>
             <TabPanel header="รายละเอียดขาไป">
-              <p class="m-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
+              <div class="grid formgrid p-fluid">
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">วันที่ขย</label>
+                  <InputText type="text" readonly />
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">รหัสลูกค้า</label>
+                  <InputText readonly />
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">ใบสั่งงาน</label>
+                  <InputText type="text" readonly />
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">ลำดับ</label>
+                  <InputText type="text" readonly />
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">เส้นทาง</label>
+                  <InputText type="text" readonly />
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">ต้นทาง</label>
+                  <InputText type="text" readonly />
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">ปลายทาง</label>
+                  <InputText type="text" readonly />
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">ชื่อร้านปลายทาง</label>
+                  <InputText type="text" readonly />
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">สินค้า</label>
+                  <InputText type="text" readonly />
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">น้ำหนัก</label>
+                  <InputText type="text" readonly />
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                  <label class="font-medium text-900">จำนวน</label>
+                  <InputText type="text" readonly />
+                </div>
+              </div>
+              <div class="grid formgrid p-fluid">
+                <h4>คิดตาม</h4>
+                <div class="field mb-4 col-12">
+                  <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center">
+                      <RadioButton  value="0" />
+                      <label class="ml-2">น้ำหนัก</label>
+                    </div>
+                    <div class="flex items-center">
+                      <RadioButton value="1" class="ml-2" />
+                      <label class="ml-2">ต่อเที่ยว</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </TabPanel>
             <TabPanel header="รายละเอียดขากลับ">
               <p class="m-0">
@@ -238,9 +298,7 @@ function confirmImport() {
                 eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
               </p>
             </TabPanel>
- 
           </TabView>
-
         </div>
       </div>
     </MainContentWarp>
