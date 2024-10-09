@@ -12,7 +12,7 @@ const instanceApi = (authentication = true) =>{
     // console.log("API URL : ", process.env.VUE_APP_API);
 
     //http://43.240.113.43:8776/TransporterRestServiceAPI/service/stockservice/
-    const http = axios.create({ baseURL: 'http://203.154.158.132:8081/KBGPriceServiceAPI/service/priceservice/'});
+    const http = axios.create({ baseURL: 'http://localhost:8084/TransporterRestServiceAPI/service/transportservice/'});
     http.defaults.headers.common['Content-Type'] = 'application/json';
 
     http.interceptors.response.use(

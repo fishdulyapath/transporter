@@ -6,6 +6,46 @@ export const menus = [
     to: "/",
     children: [],
   },
-
-  
+  {
+    title: "อนุมัติรายการ",
+    name: "tsdocapprovelist",
+    icon: "pi pi-file",
+    to: "/tsdocapprovelist",
+    children: [],
+  },
+  {
+    title: "รายงานการขนส่ง",
+    name: "tsreport",
+    icon: "pi pi-file-pdf",
+    to: "/tsreport",
+    children: [],
+  },
+  {
+    title: "ประวัติการขนส่ง",
+    name: "tsdochistorylist",
+    icon: "pi pi-history",
+    to: "/tsdochistorylist",
+    children: [],
+  },
+  {
+    title: "ทะเบียนรถ",
+    name: "carlist",
+    icon: "pi pi-car",
+    to: "/carlist",
+    children: [],
+  },
+  {
+    title: "กำหนดเส้นทาง",
+    name: "routelist",
+    icon: "pi pi-map",
+    to: "/routelist",
+    children: [],
+  },
+  {
+    title: "กำหนดสิทธิ์",
+    name: "permission_list",
+    icon: "pi pi-book",
+    to: "/permissionlist",
+    children: [],
+  },
 ];

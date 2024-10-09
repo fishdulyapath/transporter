@@ -4,10 +4,12 @@ import router from './router'
 import PrimeVue from 'primevue/config';
 import { createPinia } from 'pinia'
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 
 
 
 
+import ConfirmDialog from 'primevue/confirmdialog';
 import Avatar from 'primevue/avatar';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
@@ -63,10 +65,13 @@ const app = createApp(App)
 app.use(PrimeVue);
 app.use(router);
 app.use(ToastService);
-
+app.use(ConfirmationService);
 app.component(VueQrcode.name, VueQrcode);
 app.component('ToggleButton', ToggleButton);
+
+
 app.component('Tag', Tag);
+app.component('ConfirmDialog', ConfirmDialog);
 app.component('SelectButton', SelectButton);
 app.component('Password', Password);
 app.component('Splitter', Splitter);

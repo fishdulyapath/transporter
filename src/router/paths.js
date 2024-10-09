@@ -19,12 +19,52 @@ export default [
     component: () => import("../pages/Dashboard.vue"),
   },
   {
+    path: "/carlist",
+    name: "carlist",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/CarList.vue"),
+  },
+  {
+    path: "/tsdocapprovelist",
+    name: "tsdocapprovelist",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/TsDocApproveList.vue"),
+  },
+  {
+    path: "/send/print/:id",
+    name: "send_print",
+    meta: {
+      auth: false,
+    },
+    component: () => import("../pages/Sendprint.vue"),
+  },
+  {
+    path: "/routelist",
+    name: "routelist",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/RouteList.vue"),
+  },
+  {
     path: "/transporterdetail/:id",
     name: "transporter_detail",
     meta: {
       auth: true,
     },
     component: () => import("../pages/transport/TransportForm.vue"),
+  },
+  {
+    path: "/tsapprovedetail/:id",
+    name: "tsapprovedetail",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/transport/TransportDetail.vue"),
   },
   {
     path: "/salepricelist",
@@ -206,6 +246,22 @@ export default [
     component: () => import("../pages/DocHistoryList.vue"),
   },
   {
+    path: "/tsdochistorylist",
+    name: "tsdochistorylist",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/TsDocHistoryList.vue"),
+  },
+  {
+    path: "/tsreport",
+    name: "tsreport",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/TsReport.vue"),
+  },
+  {
     path: "/dochistorydetail/:id",
     name: "dochistory_detail",
     meta: {
@@ -213,6 +269,15 @@ export default [
     },
     component: () => import("../pages/DocHistoryDetail.vue"),
   },
+  {
+    path: "/tshistorydetail/:id",
+    name: "tshistorydetail",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/transport/TransportHistoryDetail.vue"),
+  },
+
   {
     path: "/docapprovedetail/:id",
     name: "doc_approve_detail",

@@ -16,7 +16,6 @@ const toast = useToast();
 
 // ฟอร์ม Model สำหรับบันทึกข้อมูล
 const form_model = ref({
-  expenses_supplier_code: "",
   doc_no: "",
   doc_date: new Date(),
   creator_code: localStorage._usercode || "",
@@ -36,21 +35,17 @@ const form_model = ref({
   total_mileage_before2: 0,
   total_mileage_current2: 0,
   isSameData: 0,
-  presling: 0,
-  presling_price: 0,
+  totaloiluse: 0,
 });
 
 
 const showConfirmSave = ref(false);
 const employeeDetails = ref([]);
 const customerDetails = ref([]);
-const unitDetails = ref([]);
 const destinationDetails = ref([]);
 const routeDetails = ref([]);
 const carsDetails = ref([]);
 const itemDetails = ref([]);
-const fuelDetails = ref([]);
-
 const showDialogLoading = ref(false);
 const editMode = ref(false);
 // ข้อมูลตาราง รายการสินค้า
@@ -67,10 +62,11 @@ const fuelDetails2 = ref([]);
 const expenses1 = ref([]);
 
 const expenses2 = ref([]);
-
 const supplierDetails = ref([]);
 
-const cal_by = ref([]);
+const cal_by = ref([
+
+]);
 
 onMounted(async () => {
   storeApp.setActivePage("transport_list");
@@ -84,13 +80,14 @@ onMounted(async () => {
   await getDestination();
   await getUnit();
   await getSupplier();
+
   if (route.params.id === "new") {
     storeApp.setPageTitle("สร้างเอกสารใหม่");
     form_model.value.doc_no = Utils.getDocNoDate("TS");
   } else {
     showDialogLoading.value = true;
     form_model.value.doc_no = route.params.id;
-    storeApp.setPageTitle(`แก้ไขเอกสาร ${form_model.value.doc_no}`);
+    storeApp.setPageTitle(`เอกสาร ${form_model.value.doc_no}`);
     editMode.value = true;
     setTimeout(async () => {
       await getTSDocDetail();
@@ -107,7 +104,7 @@ const getSupplier = () => {
     .then((response) => {
       if (response.success) {
         response.data.forEach(data => {
-          supplierDetails.value.push({ code: data.code, name: data.code + '~' + data.name });
+          supplierDetails.value.push({ code: data.code, name: data.name });
         });
       } else {
         toast.add({
@@ -129,6 +126,36 @@ const getSupplier = () => {
     });
 };
 
+const getUnit = () => {
+  MasterdataService.getUnit()
+    .then((response) => {
+      if (response.success) {
+        cal_by.value = response.data;
+
+      } else {
+        toast.add({
+          severity: "error",
+          summary: "เกิดข้อผิดพลาด",
+          detail: response.message,
+          life: 3000
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      toast.add({
+        severity: "error",
+        summary: "เกิดข้อผิดพลาด",
+        detail: "ไม่สามารถดึงข้อมูลได้",
+        life: 3000
+      });
+    });
+};
+
+const getSupplierName = (code) => {
+  const supplier = supplierDetails.value.find((supplier) => supplier.code === code);
+  return supplier ? supplier.name : "";
+};
 
 
 const getDestinationOptions = (customerCode) => {
@@ -167,6 +194,18 @@ const getTSDocDetail = async () => {
         fuelDetails2.value = data.fuelDetails2;
         expenses1.value = data.expenses1;
         expenses2.value = data.expenses2;
+
+        var sum_fuel = 0;
+        fuelDetails1.value.forEach(item => {
+          const amount = parseFloat(item.amount) || 0;
+
+          sum_fuel += amount;
+        });
+
+        form_model.value.totaloiluse = (sum_fuel / parseFloat(form_model.value.total_mileage1)).toFixed(2);
+
+
+
         showDialogLoading.value = false;
       } else {
         toast.add({ severity: "error", summary: "ดึงข้อมูลล้มเหลว", detail: res.message, life: 3000 });
@@ -239,24 +278,6 @@ const onCustomerChange = (rowData) => {
   console.log("destinationOptions", rowData.destinationOptions);
 };
 
-const onItemChange = (rowData) => {
-  // ถ้าลูกค้ามีการเปลี่ยนแปลง ให้ดึงร้านปลายทางที่เกี่ยวข้อง
-  console.log("onItemChange", rowData);
-  rowData.calculation_type = itemDetails.value.find((item) => item.item_code === rowData.item_code).unit_standard;
-  rowData.item_name = itemDetails.value.find((item) => item.item_code === rowData.item_code).item_name;
-};
-
-const onFuelChange = (rowData) => {
-  // ถ้าลูกค้ามีการเปลี่ยนแปลง ให้ดึงร้านปลายทางที่เกี่ยวข้อง
-  console.log("onFuelChange", rowData);
-
-  rowData.item_name = fuelDetails.value.find((item) => item.item_code === rowData.item_code).item_name;
-  rowData.unit_standard = fuelDetails.value.find((item) => item.item_code === rowData.item_code).unit_standard;
-
-
-};
-
-
 const getDestination = () => {
   MasterdataService.getDestination()
     .then((response) => {
@@ -284,31 +305,22 @@ const getDestination = () => {
     });
 };
 
+//getItemShow
+const getItemShow = (item_code) => {
+  const item = itemDetails.value.find((item) => item.item_code === item_code);
+  return item ? item.item_name : "";
+};
 
-const getUnit = () => {
-  MasterdataService.getUnit()
-    .then((response) => {
-      if (response.success) {
-        cal_by.value = response.data;
+//getCustomerShow
+const getCustomerShow = (customer_code) => {
+  const customer = customerDetails.value.find((customer) => customer.code === customer_code);
+  return customer ? customer.name : "";
+};
 
-      } else {
-        toast.add({
-          severity: "error",
-          summary: "เกิดข้อผิดพลาด",
-          detail: response.message,
-          life: 3000
-        });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      toast.add({
-        severity: "error",
-        summary: "เกิดข้อผิดพลาด",
-        detail: "ไม่สามารถดึงข้อมูลได้",
-        life: 3000
-      });
-    });
+//getCalByName
+const getCalByName = (code) => {
+  const cal = cal_by.value.find((cal) => cal.code === code);
+  return cal ? cal.name : "";
 };
 
 const getCustomer = () => {
@@ -341,35 +353,13 @@ const addRow = (items) => {
   items.push({
 
     send_date: new Date(),
-    item_code: (itemDetails.value.length > 0) ? itemDetails.value[0].item_code : '',
-    calculation_type: "",
+    calculation_type: "0",
     unit_price: 0,
     allowance: 0,
     revenue: 0,
 
   });
-
-  onItemChange(items[items.length - 1]);
 };
-
-const addFuelRow = (items) => {
-
-  items.push({
-    fuel_date: new Date(),
-    supplier_code: "",
-    route_code: "",
-    fuel_doc_no: "",
-    item_code: (fuelDetails.value.length > 0) ? fuelDetails.value[0].item_code : '',
-    item_name: "",
-    amount: 0,
-    unit_price: 0,
-    total: 0,
-  });
-
-
-  onFuelChange(items[items.length - 1]);
-};
-
 
 
 const getIncomeList = () => {
@@ -380,8 +370,12 @@ const getIncomeList = () => {
 
 
         response.data.forEach(data => {
-          itemDetails.value.push({ item_code: data.code, item_label: data.code + '~' + data.name, item_name: data.name, unit_standard: data.unit_standard });
+          itemDetails.value.push({ item_code: data.code, item_name: data.code + '~' + data.name });
         });
+        /*response.data.forEach(data => {
+          transportItems1.value.push({ ...data, send_date: new Date(), calculation_type: '0' });
+          transportItems2.value.push({ ...data, send_date: new Date(), calculation_type: '0' });
+        });*/
 
       } else {
         toast.add({
@@ -494,12 +488,10 @@ const getFuelList = () => {
       console.log("fuelDetails1", response);
       if (response.success) {
 
-        response.data.forEach(data => {
-
-          fuelDetails.value.push({ item_code: data.code, item_name: data.name, amount: 0, unit_price: 0, unit_standard: data.unit_standard, item_label: data.code + '~' + data.name });
-          // fuelDetails1.value.push({ item_code: data.code, item_name: data.name, amount: 0, unit_price: 0, unit_standard: data.unit_standard });
-          // fuelDetails2.value.push({ item_code: data.code, item_name: data.name, amount: 0, unit_price: 0, unit_standard: data.unit_standard });
-        });
+        // response.data.forEach(data => {
+        //   fuelDetails1.value.push({ item_code: data.code, item_name: data.code + '~' + data.name, amount: 0, unit_price: 0 });
+        //   fuelDetails2.value.push({ item_code: data.code, item_name: data.code + '~' + data.name, amount: 0, unit_price: 0 });
+        // });
 
       } else {
         toast.add({
@@ -526,10 +518,10 @@ const getExpensedList = () => {
     .then((response) => {
       console.log("expenses1", response);
       if (response.success) {
-        response.data.forEach(data => {
-          expenses1.value.push({ item_code: data.code, item_name: data.name, amount: 0, unit_standard: data.unit_standard });
-          expenses2.value.push({ item_code: data.code, item_name: data.name, amount: 0, unit_standard: data.unit_standard });
-        });
+        // response.data.forEach(data => {
+        //   expenses1.value.push({ item_code: data.code, item_name: data.code + '~' + data.name, amount: 0 });
+        //   expenses2.value.push({ item_code: data.code, item_name: data.code + '~' + data.name, amount: 0 });
+        // });
       } else {
         toast.add({
           severity: "error",
@@ -548,11 +540,6 @@ const getExpensedList = () => {
         life: 3000
       });
     });
-};
-
-const getCalByName = (code) => {
-  const cal = cal_by.value.find((cal) => cal.code === code);
-  return cal ? cal.name : "";
 };
 
 const saveData = () => {
@@ -580,14 +567,6 @@ const saveData = () => {
 
 };
 
-const onItemBlur = (item, field) => {
-  const selectedItem = itemDetails.value.find(option => option.item_code === item[field]);
-  if (selectedItem) {
-    // แทนที่ชื่อสินค้าเป็น item_code
-    item[field] = selectedItem.item_code;
-  }
-}
-
 const confirmSave = () => {
   const data = {
     ...form_model.value,
@@ -598,7 +577,7 @@ const confirmSave = () => {
     fuelDetails2: fuelDetails2.value,
     expenses2: expenses2.value,
   };
-  console.log(data)
+
   if (editMode.value) {
     updateData(data);
   } else {
@@ -654,8 +633,7 @@ const validateForm = () => {
     { code: 'doc_date', name: 'วันที่' },
     { code: 'car_code', name: 'ทะเบียนรถ' },
     { code: 'return_date', name: 'วันที่กลับ' },
-    { code: 'driver1', name: 'คนขับ' },
-    { code: 'expenses_supplier_code', name: 'เจ้าหนี้' }
+    { code: 'driver1', name: 'คนขับ1' }
   ];
 
   // วนลูปเช็คค่าว่างในฟิลด์
@@ -721,29 +699,6 @@ const validateForm = () => {
     }
   }
 
-  for (const [index, item] of fuelDetails1.value.entries()) {
-    // รายการที่ต้องตรวจสอบ
-    const requiredFields = [
-      { field: 'fuel_date', name: 'วันที่' },
-      { field: 'supplier_code', name: 'ผู้ขาย' },
-      { field: 'fuel_doc_no', name: 'เลขที่ใบแจ้งหนี้' },
-      { field: 'item_code', name: 'สินค้า' },
-      { field: 'route_code', name: 'เส้นทาง' }
-    ];
-
-    for (const { field, name } of requiredFields) {
-      if (!item[field]) {
-        toast.add({
-          severity: "error",
-          summary: `ค่าเชื้อเพลิงแถวที่ ${index + 1}: ข้อมูลไม่ครบถ้วน`,
-          detail: `กรุณากรอกข้อมูลในช่อง ${name}`,
-          life: 3000,
-        });
-        errorcheck = true;
-      }
-    }
-  }
-
   if (errorcheck) {
     return false;
   }
@@ -799,7 +754,7 @@ watch(
 );
 
 const goList = () => {
-  router.push("/");
+  router.push("/tsdocapprovelist");
 };
 
 </script>
@@ -814,139 +769,119 @@ const goList = () => {
           <div class="grid formgrid p-fluid">
             <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">ใบปฏิบ้ติงาน</label>
-              <InputText type="text" v-model="form_model.doc_no" />
+              <InputText type="text" v-model="form_model.doc_no" readonly />
             </div>
             <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">วันที่</label>
-              <Calendar dateFormat="yy-mm-dd" :showIcon="true" v-model="form_model.doc_date" />
+              <InputText type="text" :value="Utils.getDateFormatPG(form_model.doc_date)" readonly />
             </div>
             <div class="field mb-4 col-12 md:col-6">
               <label class="font-medium text-900">หมายเหตุ</label>
-              <InputText type="text" v-model="form_model.remark" />
+              <InputText type="text" v-model="form_model.remark" readonly />
             </div>
           </div>
           <div class="grid formgrid p-fluid">
             <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">ทะเบียนรถ</label>
-              <Dropdown v-model="form_model.car_code" :options="carsDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกทะเบียนรถ" />
+              <InputText type="text" :value="form_model.car_code" readonly />
             </div>
             <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">วันที่กลับ</label>
-              <Calendar dateFormat="yy-mm-dd" v-model="form_model.return_date" :showIcon="true" />
+
+              <InputText type="text" :value="Utils.getDateFormatPG(form_model.return_date)" readonly />
             </div>
             <div class="field mb-4 col-12 md:col-3">
-              <label class="font-medium text-900">คนขับ</label>
-              <Dropdown v-model="form_model.driver1" :options="employeeDetails" filter optionLabel="name" optionValue="code" placeholder="เลือกคนขับ" showClear />
+              <label class="font-medium text-900">คนขับ1</label>
+              <InputText type="text" :value="form_model.driver1_name" readonly />
             </div>
             <!-- <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">คนขับ2</label>
-              <Dropdown v-model="form_model.driver2" :options="employeeDetails" filter optionLabel="name" optionValue="code" placeholder="เลือกคนขับ" showClear />
+
+              <InputText type="text" :value="form_model.driver2_name" readonly />
             </div> -->
           </div>
           <h4>รายการสินค้า</h4>
           <TabView>
             <TabPanel header="รายละเอียดขาไป">
-              <div class="flex align-items-center mb-2">
-                <Checkbox v-model="form_model.isSameData" :binary="true" :true-value="1" :false-value="0" />
+              <div class="flex align-items-center">
+                <Checkbox v-model="form_model.isSameData" :binary="true" :true-value="1" :false-value="0" :disabled="true" />
                 <label for="ingredient1" class="ml-2"> ใช้ข้อมูลเดียวกันทั้งขาไปและกลับ </label>
               </div>
 
-              <div class="grid formgrid p-fluid" v-if="transportItems1.length == 0">
-                <div class="field mb-2 col-12 md:col-2">
-                  <Button icon="pi pi-plus" class=" p-button-success flex" label="เพิ่มรายการสินค้า" @click="addRow(transportItems1)" />
-                </div>
-              </div>
               <DataTable :value="transportItems1">
+                <Column header="ลำดับ" class="text-center" style="width:85px">
+                  <template #body="{ index }">
+                    {{ index + 1 }}
+                  </template>
+                </Column>
                 <Column field="send_date" header="วันที่ขน" style="min-width: 170px;">
                   <template #body="{ data, field }">
-                    <Calendar class="w-full" dateFormat="yy-mm-dd" :showIcon="true" type="text" v-model="data[field]" fluid />
+
+                    {{ Utils.getDateFormatPG(data[field]) }}
                   </template>
                 </Column>
-                <Column field="item_code" header="รหัสสินค้า">
-                  <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="itemDetails" filter optionLabel="item_label" optionValue="item_code" placeholder="เลือกสินค้า"
-                      @change="onItemChange(data)">
-
-                      <template #option="{ option }">
-
-                        <span>{{ option.item_label }}</span>
-                      </template>
-                      <template #value="{ value }">
-
-                        <span>{{ value }}</span>
-                      </template>
-                    </Dropdown>
-                  </template>
-                </Column>
-                <Column field="item_name" header="ชื่อสินค้า" style="width:20%">
-                  <template #body="{ data, field }">
-                    <InputText type="text" v-model="data[field]" fluid />
+                <Column field="item_code" header="สินค้า">
+                  <template #body="{ data }">
+                    {{ data.item_code }}~{{ data.item_name }}
                   </template>
                 </Column>
                 <Column field="customer" header="ลูกค้า">
                   <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="customerDetails" filter optionLabel="name" optionValue="code" placeholder="เลือกลูกค้า"
-                      @change="onCustomerChange(data)" />
+                    {{ getCustomerShow(data[field]) }}
                   </template>
                 </Column>
                 <Column field="route" header="เส้นทาง">
                   <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง" />
+
+                    {{ data[field] }}
                   </template>
                 </Column>
                 <Column field="dest_name" header="ชื่อร้านปลายทาง">
                   <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="data.destinationOptions" filter optionLabel="name" optionValue="name" placeholder="เลือกร้านปลายทาง" />
+
+                    {{ data[field] }}
                   </template>
                 </Column>
                 <Column field="shipment_no" header="เลขที่ใบขน">
                   <template #body="{ data, field }">
-                    <InputText type="text" v-model="data[field]" fluid />
+                    {{ data[field] }}
                   </template>
                 </Column>
                 <Column field="calculation_type" header="หน่วย">
                   <template #body="{ data, field }">
+
                     {{ getCalByName(data[field]) }}
                   </template>
                 </Column>
-                <Column field="unit_price" header="จำนวน">
-                  <template #body="{ data, field }">
-                    <InputText type="number" v-model="data[field]" fluid class="text-right" />
-                  </template>
-                </Column>
-                <Column field="allowance" header="ราคา">
-                  <template #body="{ data, field }">
-                    <InputText type="number" v-model="data[field]" fluid class="text-right" />
-                  </template>
-                </Column>
-                <Column field="revenue" header="รายได้">
+                <Column field="unit_price" header="จำนวน" class="text-right">
                   <template #body="{ data, field }">
                     {{ Utils.formatNumber(data[field]) }}
                   </template>
                 </Column>
-                <Column header="">
-
-                  <template #body="{ data }">
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="transportItems1.splice(transportItems1.indexOf(data), 1)" />
+                <Column field="allowance" header="ราคา" class="text-right">
+                  <template #body="{ data, field }">
+                    {{ Utils.formatNumber(data[field]) }}
                   </template>
                 </Column>
+                <Column field="revenue" header="รายได้" class="text-right">
+                  <template #body="{ data, field }">
+                    {{ Utils.formatNumber(data[field]) }}
+                  </template>
+                </Column>
+
 
                 <ColumnGroup type="footer">
                   <Row>
 
-                    <Column footer="รวม" :colspan="11" footerStyle="text-align:right" />
+                    <Column footer="รวม" :colspan="10" footerStyle="text-align:right" />
                     <Column :footer="Utils.formatNumber(totalRevenue1)" footerStyle="text-align:right" />
-                    <Column footer="" footerStyle="text-align:center" />
+
                   </Row>
                 </ColumnGroup>
               </DataTable>
+
             </TabPanel>
             <TabPanel header="รายละเอียดขากลับ" v-if="form_model.isSameData == 0">
-              <div class="grid formgrid p-fluid">
-                <div class="field mb-2 col-12 md:col-2" v-if="transportItems2.length == 0">
-                  <Button icon="pi pi-plus" class=" p-button-success flex" label="เพิ่มรายการสินค้า" @click="addRow(transportItems2)" />
-                </div>
-              </div>
               <DataTable :value="transportItems2">
                 <Column header="ลำดับ" class="text-center" style="width:85px">
                   <template #body="{ index }">
@@ -955,233 +890,177 @@ const goList = () => {
                 </Column>
                 <Column field="send_date" header="วันที่ขน" style="min-width: 170px;">
                   <template #body="{ data, field }">
-                    <Calendar class="w-full" dateFormat="yy-mm-dd" :showIcon="true" type="text" v-model="data[field]" fluid />
+
+                    {{ Utils.getDateFormatPG(data[field]) }}
                   </template>
                 </Column>
                 <Column field="item_code" header="สินค้า">
-                  <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="itemDetails" filter optionLabel="item_label" optionValue="item_code" placeholder="เลือกสินค้า"
-                      @change="onItemChange(data)">
-
-                      <template #option="{ option }">
-
-                        <span>{{ option.item_label }}</span>
-                      </template>
-                      <template #value="{ value }">
-
-                        <span>{{ value }}</span>
-                      </template>
-                    </Dropdown>
-                  </template>
-                </Column>
-                <Column field="item_name" header="ชื่อสินค้า" style="width:20%">
-                  <template #body="{ data, field }">
-                    <InputText type="text" v-model="data[field]" fluid />
+                  <template #body="{ data }">
+                    {{ data.item_code }}~{{ data.item_name }}
                   </template>
                 </Column>
                 <Column field="customer" header="ลูกค้า">
                   <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="customerDetails" filter optionLabel="name" optionValue="code" placeholder="เลือกลูกค้า"
-                      @change="onCustomerChange(data)" />
+                    {{ getCustomerShow(data[field]) }}
                   </template>
                 </Column>
                 <Column field="route" header="เส้นทาง">
                   <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง" />
+
+                    {{ data[field] }}
                   </template>
                 </Column>
                 <Column field="dest_name" header="ชื่อร้านปลายทาง">
                   <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="data.destinationOptions" filter optionLabel="name" optionValue="name" placeholder="เลือกร้านปลายทาง" />
+
+                    {{ data[field] }}
                   </template>
                 </Column>
                 <Column field="shipment_no" header="เลขที่ใบขน">
                   <template #body="{ data, field }">
-                    <InputText type="text" v-model="data[field]" fluid />
+                    {{ data[field] }}
                   </template>
                 </Column>
                 <Column field="calculation_type" header="หน่วย">
                   <template #body="{ data, field }">
+
                     {{ getCalByName(data[field]) }}
                   </template>
                 </Column>
-                <Column field="unit_price" header="จำนวน">
-                  <template #body="{ data, field }">
-                    <InputText type="number" v-model="data[field]" fluid class="text-right" />
-                  </template>
-                </Column>
-                <Column field="allowance" header="ราคา">
-                  <template #body="{ data, field }">
-                    <InputText type="number" v-model="data[field]" fluid class="text-right" />
-                  </template>
-                </Column>
-                <Column field="revenue" header="รายได้">
+                <Column field="unit_price" header="จำนวน" class="text-right">
                   <template #body="{ data, field }">
                     {{ Utils.formatNumber(data[field]) }}
                   </template>
                 </Column>
-                <Column header="">
-
-                  <template #body="{ data }">
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="transportItems2.splice(transportItems2.indexOf(data), 1)" />
+                <Column field="allowance" header="ราคา" class="text-right">
+                  <template #body="{ data, field }">
+                    {{ Utils.formatNumber(data[field]) }}
                   </template>
                 </Column>
+                <Column field="revenue" header="รายได้" class="text-right">
+                  <template #body="{ data, field }">
+                    {{ Utils.formatNumber(data[field]) }}
+                  </template>
+                </Column>
+
 
                 <ColumnGroup type="footer">
                   <Row>
 
-                    <Column footer="รวม" :colspan="11" footerStyle="text-align:right" />
+                    <Column footer="รวม" :colspan="10" footerStyle="text-align:right" />
+
                     <Column :footer="Utils.formatNumber(totalRevenue2)" footerStyle="text-align:right" />
-                    <Column footer="" footerStyle="text-align:center" />
+
                   </Row>
                 </ColumnGroup>
               </DataTable>
             </TabPanel>
           </TabView>
+
           <div class="grid formgrid p-fluid">
-            <div class="field mb-4 col-12 md:col-3">
-              <label class="font-medium text-900">เบิกพีสลิง</label>
-              <InputText type="text" v-model="form_model.presling" />
+            <div class="field mb-2 mt-2 col-12 md:col-2">
+              <label class="font-medium text-900">เบิกพีสลิง : {{ form_model.presling }}</label>
             </div>
-            <div class="field mb-4 col-12 md:col-3">
-              <label class="font-medium text-900">ค่าขนส่งพรีสลิง</label>
-              <InputText type="text" v-model="form_model.presling_price" />
+            <div class="field mb-2 mt-2 col-12 md:col-2">
+              <label class="font-medium text-900">ค่าขนส่งพรีสลิง : {{ form_model.presling_price }}</label>
+
             </div>
           </div>
-          <div class="">
-            <!-- ตาราง ค่าเชื้อเพลิง -->
-            <h4>ค่าเชื้อเพลิง</h4>
-            <div class="grid formgrid p-fluid">
-              <div class="field mb-2 col-12 md:col-2">
-                <Button icon="pi pi-plus" class=" p-button-success flex" label="เพิ่มรายการเชื้อเพลิง" @click="addFuelRow(fuelDetails1)" />
-              </div>
-            </div>
-            <DataTable :value="fuelDetails1">
+          <!-- ตาราง ค่าเชื้อเพลิง -->
+          <h4>ค่าเชื้อเพลิง</h4>
+          <DataTable :value="fuelDetails1">
+            <Column header="ลำดับ" class="text-center" style="width:85px">
+              <template #body="{ index }">
+                {{ index + 1 }}
+              </template>
+            </Column>
 
-              <Column field="fuel_date" header="วันที่" style="min-width: 170px;">
-                <template #body="{ data, field }">
-                  <Calendar class="w-full" dateFormat="yy-mm-dd" :showIcon="true" type="text" v-model="data[field]" fluid />
-                </template>
-              </Column>
+            <Column field="fuel_date" header="วันที่">
+              <template #body="{ data, field }">
+                {{ Utils.getDateFormatPG(data[field]) }}
+              </template>
+            </Column>
+            <Column field="supplier_code" header="เจ้าหนี้">
+              <template #body="{ data, field }">
+                {{ getSupplierName(data[field]) }}
+              </template>
+            </Column>
 
-              <Column field="supplier_code" header="ผู้ขาย">
-                <template #body="{ data, field }">
-                  <Dropdown v-model="data[field]" fluid :options="supplierDetails" filter optionLabel="name" optionValue="code" placeholder="เลือกเจ้าหนี้" />
-                </template>
-              </Column>
-              <Column field="fuel_doc_no" header="เลขที่ใบแจ้งหนี้" style="width:8%">
-                <template #body="{ data, field }">
-                  <InputText type="text" v-model="data[field]" fluid />
-                </template>
-              </Column>
-              <Column field="route_code" header="เส้นทาง">
-                <template #body="{ data, field }">
-                  <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง" />
-                </template>
-              </Column>
-              <Column field="item_code" header="สินค้า">
-                <template #body="{ data, field }">
-                  <Dropdown v-model="data[field]" fluid :options="fuelDetails" filter optionLabel="item_label" optionValue="item_code" placeholder="เลือกสินค้า"
-                    @change="onFuelChange(data)">
+            <Column field="fuel_doc_no" header="เลขที่ใบแจ้งหนี้" />
 
-                    <template #option="{ option }">
+            <Column field="route_code" header="เส้นทาง" />
+            <Column field="item_name" header="สินค้า" />
 
-                      <span>{{ option.item_label }}</span>
-                    </template>
-                    <template #value="{ value }">
+            <Column field="amount" header="จำนวน" class="text-right">
+              <template #body="{ data, field }">
+                {{ Utils.formatNumber(data[field]) }}
+              </template>
+            </Column>
+            <Column field="unit_price" header="ลิตละ" class="text-right">
+              <template #body="{ data, field }">
+                {{ Utils.formatNumber(data[field]) }}
+              </template>
+            </Column>
+            <Column header="รวม" class="text-right">
+              <template #body="{ data }">
+                {{ Utils.formatNumber(data.amount * data.unit_price) }}
+              </template>
+            </Column>
 
-                      <span>{{ value }}</span>
-                    </template>
-                  </Dropdown>
-                </template>
-              </Column>
+            <ColumnGroup type="footer">
+              <Row>
+                <Column footer="รวม" :colspan="8" footerStyle="text-align:right" />
+                <Column :footer="Utils.formatNumber(totalFuel1)" footerStyle="text-align:right" />
+              </Row>
+            </ColumnGroup>
+          </DataTable>
 
-              <Column field="item_name" header="ชื่อสินค้า" style="width:20%">
-                <template #body="{ data, field }">
-                  <InputText type="text" v-model="data[field]" fluid />
-                </template>
-              </Column>
-
-              <Column field="amount" header="จำนวน">
-                <template #body="{ data, field }">
-                  <InputText type="number" v-model="data[field]" class="text-right" />
-                </template>
-              </Column>
-              <Column field="unit_price" header="ลิตละ">
-                <template #body="{ data, field }">
-                  <InputText type="number" v-model="data[field]" class="text-right" />
-                </template>
-              </Column>
-              <Column header="รวม" class="text-right">
-                <template #body="{ data }">
-                  {{ Utils.formatNumber(data.amount * data.unit_price) }}
-                </template>
-              </Column>
-              <Column header="">
-                <template #body="{ data }">
-                  <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="fuelDetails1.splice(fuelDetails1.indexOf(data), 1)" />
-                </template>
-              </Column>
-
-              <ColumnGroup type="footer">
-                <Row>
-                  <Column footer="รวม" :colspan="8" footerStyle="text-align:right" />
-                  <Column :footer="Utils.formatNumber(totalFuel1)" footerStyle="text-align:right" />
-                  <Column footer="" />
-                </Row>
-              </ColumnGroup>
-            </DataTable>
-
-            <!-- ตาราง ค่าใช้จ่ายรวม -->
-
-            <h4>ค่าใช้จ่ายรวม</h4>
-            <div class="grid formgrid p-fluid">
-              <div class="field mb-2 col-12 md:col-3">
-                <label class="font-medium text-900">เจ้าหนี้</label>
-                <Dropdown v-model="form_model.expenses_supplier_code" fluid :options="supplierDetails" filter optionLabel="name" optionValue="code" placeholder="เลือกเจ้าหนี้" />
-              </div>
-            </div>
-
-            <DataTable :value="expenses1">
-              <Column header="ลำดับ" class="text-center" style="width:85px">
-                <template #body="{ index }">
-                  {{ index + 1 }}
-                </template>
-              </Column>
-              <Column field="item_name" header="สินค้า" />
-              <Column field="amount" header="จำนวน" style="width:20%">
-                <template #body="{ data, field }">
-                  <InputText type="number" v-model="data[field]" class="text-right" />
-                </template>
-              </Column>
-              <ColumnGroup type="footer">
-                <Row>
-                  <Column footer="รวม" :colspan="2" footerStyle="text-align:right" />
-                  <Column :footer="Utils.formatNumber(totalExpenses1)" footerStyle="text-align:right" />
-
-                </Row>
-              </ColumnGroup>
-            </DataTable>
+          <!-- ตาราง ค่าใช้จ่ายรวม -->
+          <h4>ค่าใช้จ่ายรวม</h4>
+          <div class="flex align-items-center mt-0 pt-0">
+            เจ้าหนี้ : {{ getSupplierName(form_model.expenses_supplier_code) }}
           </div>
+          <DataTable :value="expenses1">
+            <Column header="ลำดับ" class="text-center" style="width:85px">
+              <template #body="{ index }">
+                {{ index + 1 }}
+              </template>
+            </Column>
+            <Column field="item_name" header="สินค้า" />
+            <Column field="amount" header="จำนวน" style="width:20%" class="text-right">
+              <template #body="{ data, field }">
+                {{ Utils.formatNumber(data[field]) }}
+              </template>
+            </Column>
+            <ColumnGroup type="footer">
+              <Row>
+                <Column footer="รวม" :colspan="2" footerStyle="text-align:right" />
+                <Column :footer="Utils.formatNumber(totalExpenses1)" footerStyle="text-align:right" />
+
+              </Row>
+            </ColumnGroup>
+          </DataTable>
+
+
           <div class="grid formgrid p-fluid mt-2 mx-2">
             <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">เลขไมล์ขาไป</label>
-              <InputText type="text" v-model="form_model.start_mileage1" />
+              <InputText type="text" v-model="form_model.start_mileage1" readonly />
             </div>
             <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">เลขไมล์ขากลับ</label>
-              <InputText type="text" v-model="form_model.end_mileage1" />
+              <InputText type="text" v-model="form_model.end_mileage1" readonly />
             </div>
             <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">ระยะทางเที่ยวนี้</label>
               <InputText type="text" v-model="form_model.total_mileage1" readonly />
             </div>
+            <div class="field mb-4 col-12 md:col-3">
+              <label class="font-medium text-900">อัตราการใช้น้ำมัน (กม./ชม)</label>
+              <InputText type="text" v-model="form_model.totaloiluse" readonly />
+            </div>
           </div>
 
-          <div class="flex justify-content-between flex-wrap">
-            <div class="flex align-items-center justify-content-center"> <Button label="ยกเลิก" icon="pi pi-arrow-left" class="p-button-danger" @click="goList()" /></div>
-            <div class="flex align-items-center justify-content-center"><Button label="บันทึก" icon="pi pi-save" class="p-button-success" @click="saveData()" /></div>
-          </div>
         </div>
       </div>
       <Dialog v-model:visible="showDialogLoading" :style="{ width: '350px' }" :modal="true" :closable="false">

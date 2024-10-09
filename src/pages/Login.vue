@@ -34,9 +34,8 @@ async function handleLogin() {
       // select shop
       localStorage.provider = provider.value;
       localStorage.dbname = dbname.value;
-      setTimeout(async () => {
-          router.push({ name: "dashboard" });
-        }, 1000);
+
+      getErpUserPermission()
     } else {
       loginFailed.value = true;
     }
@@ -54,6 +53,9 @@ function getErpUserPermission() {
         localStorage.doc_list = res.data[0].doc_list;
         localStorage.doc_approve_list = res.data[0].doc_approve_list;
         localStorage.doc_history_list = res.data[0].doc_history_list;
+        localStorage.doc_report_list = res.data[0].doc_report_list;
+        localStorage.doc_car_list = res.data[0].doc_car_list;
+        localStorage.doc_route_list = res.data[0].doc_route_list;
 
         setTimeout(async () => {
           router.push({ name: "dashboard" });
@@ -154,13 +156,8 @@ onMounted(() => {
       <div class="text-3xl font-medium text-900 mb-3">เลือกร้านค้า</div>
       <div class="">
         <ul class="list-none p-0 m-0">
-          <li
-            style="border-radius: 10px; border-color: rgba(234, 179, 10, 0.5)"
-            class="pb-3 cursor-pointer p-3 border-1"
-            v-for="shop in listShop"
-            :key="shop"
-            @click="selectShop(shop)"
-          >
+          <li style="border-radius: 10px; border-color: rgba(234, 179, 10, 0.5)" class="pb-3 cursor-pointer p-3 border-1" v-for="shop in listShop" :key="shop"
+            @click="selectShop(shop)">
             {{ shop.name }}
           </li>
         </ul>

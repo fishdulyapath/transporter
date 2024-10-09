@@ -22,9 +22,9 @@ const formatNumber = (val, digit = 0) => {
     }
 
     else if (val < 0) {
-        return Numeral(val).format('(0,0)')
+        return Numeral(val).format('(0,0.00)')
     } else {
-        return Numeral(val).format('0,0')
+        return Numeral(val).format('0,0.00')
     }
 
 }

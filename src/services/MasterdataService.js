@@ -11,9 +11,118 @@ export default {
       .get(`/getDocStdList?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}`)
       .then((res) => res.data);
   },
+  getCarList(search) {
+    return instanceApi(true)
+      .get(`/getCarlist?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}`)
+      .then((res) => res.data);
+  },
+  getCustomer() {
+    return instanceApi(true)
+      .get(`/getCustomer?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
+      .then((res) => res.data);
+  },
+  getUnit() {
+    return instanceApi(true)
+      .get(`/getUnit?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
+      .then((res) => res.data);
+  },
+  getCompany() {
+    return instanceApi(true)
+      .get(`/getCompany?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
+      .then((res) => res.data);
+  },
+  getSupplier() {
+    return instanceApi(true)
+      .get(`/getSupplier?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
+      .then((res) => res.data);
+  },
+  getIncomeList() {
+    return instanceApi(true)
+      .get(`/getIncomeList?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
+      .then((res) => res.data);
+  },
+  getExpensedList() {
+    return instanceApi(true)
+      .get(`/getExpensedList?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
+      .then((res) => res.data);
+  },
+  getFuelList() {
+    return instanceApi(true)
+      .get(`/getFuelList?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
+      .then((res) => res.data);
+  },
+  getEmployee() {
+    return instanceApi(true)
+      .get(`/getEmployee?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
+      .then((res) => res.data);
+  },
+  getCustomer() {
+    return instanceApi(true)
+      .get(`/getCustomer?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
+      .then((res) => res.data);
+  },
+  getDestination() {
+    return instanceApi(true)
+      .get(`/getDestination?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
+      .then((res) => res.data);
+  },
+  getRouteList(search) {
+    return instanceApi(true)
+      .get(`/getRouteList?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}`)
+      .then((res) => res.data);
+  },
   getDocPurList(search, from_date, to_date) {
     return instanceApi(true)
       .get(`/getDocPurList?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}`)
+      .then((res) => res.data);
+  },
+  getTSDocDetail(docno) {
+    return instanceApi(true)
+      .get(`/getTSDocDetail?dbname=${localStorage.dbname}&provider=${localStorage.provider}&doc_no=${docno}`)
+      .then((res) => res.data);
+  },
+
+  deleteTSDoc(docno) {
+    return instanceApi(true)
+      .get(`/deleteTSDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&docno=${docno}`)
+      .then((res) => res.data);
+  },
+  getDocList(search, from_date, to_date) {
+    return instanceApi(true)
+      .get(`/getDocList?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}`)
+      .then((res) => res.data);
+  },
+  getTsDocApproveList(search, from_date, to_date) {
+    return instanceApi(true)
+      .get(`/getTsDocApproveList?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}`)
+      .then((res) => res.data);
+  },
+  getTsDocReportList(search, from_date, to_date) {
+    return instanceApi(true)
+      .get(`/getTsDocReportList?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}`)
+      .then((res) => res.data);
+  },
+  getTsDocHistoryList(search, from_date, to_date, status) {
+    return instanceApi(true)
+      .get(`/getTsDocHistoryList?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}&status=${status}`)
+      .then((res) => res.data);
+  },
+
+  getErpUserPermissionLogin(search) {
+    return instanceApi(true)
+      .get(`/getErpUserPermissionLogin?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}`)
+      .then((res) => res.data);
+  },
+  getErpUserPermission(search) {
+    return instanceApi(true)
+      .get(`/getErpUserPermission?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}`)
+      .then((res) => res.data);
+  },
+  upDatePermission(data, user) {
+    return instanceApi(true)
+      .post(
+        `/upDatePermission?dbname=${localStorage.dbname}&provider=${localStorage.provider}&user=${user}&doc_list=${data.doc_list}&doc_approve_list=${data.doc_approve_list}&doc_history_list=${data.doc_history_list}&doc_report_list=${data.doc_report_list}&doc_car_list=${data.doc_car_list}&doc_route_list=${data.doc_route_list}`
+      )
       .then((res) => res.data);
   },
   createImportDocNM(postData) {
@@ -27,12 +136,72 @@ export default {
       .then((res) => res.data);
   },
 
+  approveTSDoc(docno) {
+    return instanceApi(true)
+      .get(`/approveTSDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&docno=${docno}`)
+      .then((res) => res.data);
+  },
+
+  successTSDoc(docno, usercode) {
+    return instanceApi(true)
+      .get(`/successTSDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&docno=${docno}&usercode=${usercode}`)
+      .then((res) => res.data);
+  },
+
+  unapproveTSDoc(docno) {
+    return instanceApi(true)
+      .get(`/unapproveTSDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&docno=${docno}`)
+      .then((res) => res.data);
+  },
+
+
+  updateTransportData(postData) {
+    return instanceApi(true)
+      .post(`/updateTSDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
+      .then((res) => res.data);
+  },
+  saveTransportData(postData) {
+    return instanceApi(true)
+      .post(`/createTSDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
+      .then((res) => res.data);
+  },
+  updateCar(roworder, code, brand, province, car_type, register_date) {
+    return instanceApi(true)
+      .get(`/updateCar?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}&code=${code}&province=${province}&brand=${brand}&car_type=${car_type}&register_date=${register_date}`)
+      .then((res) => res.data);
+  },
+  updateRoute(roworder, code, from_place, to_place) {
+    return instanceApi(true)
+      .get(`/updateRoute?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}&code=${code}&to_place=${to_place}&from_place=${from_place}`)
+      .then((res) => res.data);
+  },
+
+  deleteCar(roworder) {
+    return instanceApi(true)
+      .get(`/deleteCar?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}`)
+      .then((res) => res.data);
+  },
+  deleteRoute(roworder) {
+    return instanceApi(true)
+      .get(`/deleteRoute?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}`)
+      .then((res) => res.data);
+  },
+  createCar(postData) {
+    return instanceApi(true)
+      .post(`/createCar?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
+      .then((res) => res.data);
+  },
+  createRoute(postData) {
+    return instanceApi(true)
+      .post(`/createRoute?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
+      .then((res) => res.data);
+  },
   saveItemPriceNM(postData) {
     return instanceApi(true)
       .post(`/saveItemPriceNM?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
       .then((res) => res.data);
   },
-  
+
   saveItemPriceSTD(postData) {
     return instanceApi(true)
       .post(`/saveItemPriceSTD?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
@@ -43,7 +212,7 @@ export default {
       .post(`/saveItemPurPrice?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
       .then((res) => res.data);
   },
-  
+
   createImportDocPur(postData) {
     return instanceApi(true)
       .post(`/createImportDocPur?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
@@ -65,17 +234,17 @@ export default {
       .get(`/getDocDetailPur?dbname=${localStorage.dbname}&provider=${localStorage.provider}&docno=${docno}`)
       .then((res) => res.data);
   },
-  getDocNMHistory(search, from_date, to_date,sale_type,trans_type,price_type,groupmain,groupsub,itembrand,itemmodel,itempattern,itemcategory,itemdesign) {
+  getDocNMHistory(search, from_date, to_date, sale_type, trans_type, price_type, groupmain, groupsub, itembrand, itemmodel, itempattern, itemcategory, itemdesign) {
     return instanceApi(true)
       .get(`/getDocNMHistory?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}&saletype=${sale_type}&transtype=${trans_type}&pricetype=${price_type}&groupmain=${groupmain}&groupsub=${groupsub}&itembrand=${itembrand}&itemmodel=${itemmodel}&itempattern=${itempattern}&itemcategory=${itemcategory}&itemdesign=${itemdesign}`)
       .then((res) => res.data);
   },
-  getDocStdHistory(search, from_date, to_date,sale_type,trans_type,price_type,groupmain,groupsub,itembrand,itemmodel,itempattern,itemcategory,itemdesign) {
+  getDocStdHistory(search, from_date, to_date, sale_type, trans_type, price_type, groupmain, groupsub, itembrand, itemmodel, itempattern, itemcategory, itemdesign) {
     return instanceApi(true)
       .get(`/getDocStdHistory?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}&saletype=${sale_type}&transtype=${trans_type}&pricetype=${price_type}&groupmain=${groupmain}&groupsub=${groupsub}&itembrand=${itembrand}&itemmodel=${itemmodel}&itempattern=${itempattern}&itemcategory=${itemcategory}&itemdesign=${itemdesign}`)
       .then((res) => res.data);
   },
-  getDocPurHistory(search, from_date, to_date,sale_type,trans_type,price_type,groupmain,groupsub,itembrand,itemmodel,itempattern,itemcategory,itemdesign) {
+  getDocPurHistory(search, from_date, to_date, sale_type, trans_type, price_type, groupmain, groupsub, itembrand, itemmodel, itempattern, itemcategory, itemdesign) {
     return instanceApi(true)
       .get(`/getDocPurHistory?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}&saletype=${sale_type}&transtype=${trans_type}&pricetype=${price_type}&groupmain=${groupmain}&groupsub=${groupsub}&itembrand=${itembrand}&itemmodel=${itemmodel}&itempattern=${itempattern}&itemcategory=${itemcategory}&itemdesign=${itemdesign}`)
       .then((res) => res.data);
@@ -107,7 +276,7 @@ export default {
       .then((res) => res.data);
   },
 
-  getItemPriceDashboardList(search, saletype, transporttype, pricetype, groupmain, itembrand, groupsub, itempattern, itemmodel, itemcategory, itemdesign,nosentprice) {
+  getItemPriceDashboardList(search, saletype, transporttype, pricetype, groupmain, itembrand, groupsub, itempattern, itemmodel, itemcategory, itemdesign, nosentprice) {
     return instanceApi(true)
       .get(`/getItemPriceDashboardList?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&saletype=${saletype}&transporttype=${transporttype}&pricetype=${pricetype}&groupmain=${groupmain}&itembrand=${itembrand}&groupsub=${groupsub}&itempattern=${itempattern}&itemmodel=${itemmodel}&itemcategory=${itemcategory}&itemdesign=${itemdesign}&nosentprice=${nosentprice}`)
       .then((res) => res.data);

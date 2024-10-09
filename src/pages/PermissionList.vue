@@ -45,6 +45,10 @@ const from_permission = ref({
   doc_list: "0",
   doc_approve_list: "0",
   doc_history_list: "0",
+  doc_report_list: "0",
+  doc_car_list: "0",
+  doc_route_list: "0",
+
 });
 
 onMounted(() => {
@@ -95,6 +99,10 @@ function doReceive(data) {
   from_permission.value.doc_list = data.doc_list;
   from_permission.value.doc_approve_list = data.doc_approve_list;
   from_permission.value.doc_history_list = data.doc_history_list;
+  from_permission.value.doc_report_list = data.doc_report_list;
+  from_permission.value.doc_car_list = data.doc_car_list;
+  from_permission.value.doc_route_list = data.doc_route_list;
+
 
 }
 
@@ -214,7 +222,7 @@ function getUserData(data) {
               <Column field="name_1" header="ชื่อ"></Column>
               <Column field="doc_list" bodyStyle="text-align:center">
                 <template #header>
-                  <div class="text-center w-full">รายการตรวจนับ</div>
+                  <div class="text-center w-full">รายการขนส่ง</div>
                 </template>
                 <template #body="slotProps">
                   <b class="text-green-500" v-if="slotProps.data.doc_list == '1'">Yes</b>
@@ -223,7 +231,7 @@ function getUserData(data) {
               </Column>
               <Column field="doc_approve_list" bodyStyle="text-align:center">
                 <template #header>
-                  <div class="text-center w-full">อนุมัติปรับปรุงรายการ</div>
+                  <div class="text-center w-full">อนุมัติรายการขนส่ง</div>
                 </template>
                 <template #body="slotProps">
                   <b class="text-green-500" v-if="slotProps.data.doc_approve_list == '1'">Yes</b>
@@ -232,14 +240,42 @@ function getUserData(data) {
               </Column>
               <Column field="doc_history_list" bodyStyle="text-align:center">
                 <template #header>
-                  <div class="text-center w-full">ประวัติรายการตรวจนับ</div>
+                  <div class="text-center w-full">ประวัติรายการขนส่ง</div>
                 </template>
                 <template #body="slotProps">
                   <b class="text-green-500" v-if="slotProps.data.doc_history_list == '1'">Yes</b>
                   <b class="text-red-500" v-if="slotProps.data.doc_history_list == '0'">No</b>
                 </template>
               </Column>
-              
+              <Column field="doc_report_list" bodyStyle="text-align:center">
+                <template #header>
+                  <div class="text-center w-full">รายงาน</div>
+                </template>
+                <template #body="slotProps">
+                  <b class="text-green-500" v-if="slotProps.data.doc_report_list == '1'">Yes</b>
+                  <b class="text-red-500" v-if="slotProps.data.doc_report_list == '0'">No</b>
+                </template>
+              </Column>
+
+              <Column field="doc_car_list" bodyStyle="text-align:center">
+                <template #header>
+                  <div class="text-center w-full">ทะเบียนรถ</div>
+                </template>
+                <template #body="slotProps">
+                  <b class="text-green-500" v-if="slotProps.data.doc_car_list == '1'">Yes</b>
+                  <b class="text-red-500" v-if="slotProps.data.doc_car_list == '0'">No</b>
+                </template>
+              </Column>
+              <Column field="doc_route_list" bodyStyle="text-align:center">
+                <template #header>
+                  <div class="text-center w-full">กำหนดเส้นทาง</div>
+                </template>
+                <template #body="slotProps">
+                  <b class="text-green-500" v-if="slotProps.data.doc_route_list == '1'">Yes</b>
+                  <b class="text-red-500" v-if="slotProps.data.doc_route_list == '0'">No</b>
+                </template>
+              </Column>
+
 
               <Column bodyStyle="text-align:right">
                 <template #body="slotProps">
@@ -256,45 +292,48 @@ function getUserData(data) {
           <div class="grid formgrid p-fluid">
             <div class="field mb-2 col-12 md:col-6">
               <label class="font-bold text-900">รายการตรวจนับ</label>
-              <SelectButton
-                v-model="from_permission.doc_list"
-                :options="[
-                  { name: 'No', code: '0' },
-                  { name: 'Yes', code: '1' },
-                ]"
-                optionLabel="name"
-                optionValue="code"
-                :multiple="false"
-              />
+              <SelectButton v-model="from_permission.doc_list" :options="[
+                { name: 'No', code: '0' },
+                { name: 'Yes', code: '1' },
+              ]" optionLabel="name" optionValue="code" :multiple="false" />
             </div>
 
             <div class="field mb-2 col-12 md:col-6">
               <label class="font-bold text-900">อนุมัติปรับราคา</label>
-              <SelectButton
-                v-model="from_permission.doc_approve_list"
-                :options="[
-                  { name: 'No', code: '0' },
-                  { name: 'Yes', code: '1' },
-                ]"
-                optionLabel="name"
-                optionValue="code"
-                :multiple="false"
-              />
+              <SelectButton v-model="from_permission.doc_approve_list" :options="[
+                { name: 'No', code: '0' },
+                { name: 'Yes', code: '1' },
+              ]" optionLabel="name" optionValue="code" :multiple="false" />
             </div>
             <div class="field mb-2 col-12 md:col-6">
               <label class="font-bold text-900">ประวัติรายการตรวจนับ</label>
-              <SelectButton
-                v-model="from_permission.doc_history_list"
-                :options="[
-                  { name: 'No', code: '0' },
-                  { name: 'Yes', code: '1' },
-                ]"
-                optionLabel="name"
-                optionValue="code"
-                :multiple="false"
-              />
+              <SelectButton v-model="from_permission.doc_history_list" :options="[
+                { name: 'No', code: '0' },
+                { name: 'Yes', code: '1' },
+              ]" optionLabel="name" optionValue="code" :multiple="false" />
             </div>
-            
+            <div class="field mb-2 col-12 md:col-6">
+              <label class="font-bold text-900">รายงาน</label>
+              <SelectButton v-model="from_permission.doc_report_list" :options="[
+                { name: 'No', code: '0' },
+                { name: 'Yes', code: '1' },
+              ]" optionLabel="name" optionValue="code" :multiple="false" />
+            </div>
+            <div class="field mb-2 col-12 md:col-6">
+              <label class="font-bold text-900">ทะเบียนรถ</label>
+              <SelectButton v-model="from_permission.doc_car_list" :options="[
+                { name: 'No', code: '0' },
+                { name: 'Yes', code: '1' },
+              ]" optionLabel="name" optionValue="code" :multiple="false" />
+            </div>
+            <div class="field mb-2 col-12 md:col-6">
+              <label class="font-bold text-900">กำหนดเส้นทาง</label>
+              <SelectButton v-model="from_permission.doc_route_list" :options="[
+                { name: 'No', code: '0' },
+                { name: 'Yes', code: '1' },
+              ]" optionLabel="name" optionValue="code" :multiple="false" />
+            </div>
+
           </div>
         </div>
         <template #footer>
@@ -325,11 +364,9 @@ function getUserData(data) {
       <Dialog v-model:visible="deleteDetailDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
         <div class="confirmation-content">
           <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-          <span
-            >ไม่อนุมัติเอกสารขอปรับราคา
+          <span>ไม่อนุมัติเอกสารขอปรับราคา
             <b>{{ detail }} </b>
-            ใช่หรือไม่?</span
-          >
+            ใช่หรือไม่?</span>
         </div>
         <template #footer>
           <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteDetailDialog = false" />
