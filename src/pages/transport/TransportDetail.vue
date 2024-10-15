@@ -180,6 +180,8 @@ const getTSDocDetail = async () => {
         transportItems1.value = data.transportItems1.map(item => {
           return {
             ...item,
+            from_place: routeDetails.value.find((route) => route.code === item.route).from_place,
+            to_place: routeDetails.value.find((route) => route.code === item.route).to_place,
             destinationOptions: getDestinationOptions(item.customer)
           }
         });
@@ -187,10 +189,19 @@ const getTSDocDetail = async () => {
         transportItems2.value = data.transportItems2.map(item => {
           return {
             ...item,
+            from_place: routeDetails.value.find((route) => route.code === item.route).from_place,
+            to_place: routeDetails.value.find((route) => route.code === item.route).to_place,
             destinationOptions: getDestinationOptions(item.customer)
           }
         });
-        fuelDetails1.value = data.fuelDetails1;
+        fuelDetails1.value = data.fuelDetails1.map(item => {
+          return {
+            ...item,
+            from_place: routeDetails.value.find((route) => route.code === item.route_code).from_place,
+            to_place: routeDetails.value.find((route) => route.code === item.route_code).to_place,
+          }
+        });
+
         fuelDetails2.value = data.fuelDetails2;
         expenses1.value = data.expenses1;
         expenses2.value = data.expenses2;
@@ -836,6 +847,9 @@ const goList = () => {
                     {{ data[field] }}
                   </template>
                 </Column>
+                <Column field="from_place" header="ต้นทาง" />
+                <Column field="to_place" header="ปลายทาง" />
+
                 <Column field="dest_name" header="ชื่อร้านปลายทาง">
                   <template #body="{ data, field }">
 
@@ -910,6 +924,9 @@ const goList = () => {
                     {{ data[field] }}
                   </template>
                 </Column>
+                <Column field="from_place" header="ต้นทาง" />
+                <Column field="to_place" header="ปลายทาง" />
+
                 <Column field="dest_name" header="ชื่อร้านปลายทาง">
                   <template #body="{ data, field }">
 
@@ -989,6 +1006,8 @@ const goList = () => {
             <Column field="fuel_doc_no" header="เลขที่ใบแจ้งหนี้" />
 
             <Column field="route_code" header="เส้นทาง" />
+            <Column field="from_place" header="ต้นทาง" />
+            <Column field="to_place" header="ปลายทาง" />
             <Column field="item_name" header="สินค้า" />
 
             <Column field="amount" header="จำนวน" class="text-right">

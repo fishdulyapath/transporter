@@ -150,9 +150,13 @@ const getTSDocDetail = async () => {
           ...data,
         };
 
+
+
         transportItems1.value = data.transportItems1.map(item => {
           return {
             ...item,
+            from_place: routeDetails.value.find((route) => route.code === item.route).from_place,
+            to_place: routeDetails.value.find((route) => route.code === item.route).to_place,
             destinationOptions: getDestinationOptions(item.customer)
           }
         });
@@ -160,10 +164,20 @@ const getTSDocDetail = async () => {
         transportItems2.value = data.transportItems2.map(item => {
           return {
             ...item,
+            from_place: routeDetails.value.find((route) => route.code === item.route).from_place,
+            to_place: routeDetails.value.find((route) => route.code === item.route).to_place,
             destinationOptions: getDestinationOptions(item.customer)
           }
         });
-        fuelDetails1.value = data.fuelDetails1;
+        fuelDetails1.value = data.fuelDetails1.map(item => {
+          return {
+            ...item,
+            from_place: routeDetails.value.find((route) => route.code === item.route_code).from_place,
+            to_place: routeDetails.value.find((route) => route.code === item.route_code).to_place,
+          }
+        });
+
+
         fuelDetails2.value = data.fuelDetails2;
         expenses1.value = data.expenses1;
         expenses2.value = data.expenses2;
@@ -238,6 +252,21 @@ const onCustomerChange = (rowData) => {
   );
   console.log("destinationOptions", rowData.destinationOptions);
 };
+
+const onRouteChange = (rowData) => {
+  // ถ้าลูกค้ามีการเปลี่ยนแปลง ให้ดึงร้านปลายทางที่เกี่ยวข้อง
+  console.log("onRouteChange", rowData);
+  rowData.from_place = routeDetails.value.find((item) => item.code === rowData.route).from_place;
+  rowData.to_place = routeDetails.value.find((item) => item.code === rowData.route).to_place;
+};
+
+const onRouteChangeFuel = (rowData) => {
+  // ถ้าลูกค้ามีการเปลี่ยนแปลง ให้ดึงร้านปลายทางที่เกี่ยวข้อง
+  console.log("onRouteChangeFuel", rowData);
+  rowData.from_place = routeDetails.value.find((item) => item.code === rowData.route_code).from_place;
+  rowData.to_place = routeDetails.value.find((item) => item.code === rowData.route_code).to_place;
+};
+
 
 const onItemChange = (rowData) => {
   // ถ้าลูกค้ามีการเปลี่ยนแปลง ให้ดึงร้านปลายทางที่เกี่ยวข้อง
@@ -891,8 +920,13 @@ const goList = () => {
                 </Column>
                 <Column field="route" header="เส้นทาง">
                   <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง" />
+                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง"
+                      @change="onRouteChange(data)" />
                   </template>
+                </Column>
+                <Column field="from_place" header="ต้นทาง">
+                </Column>
+                <Column field="to_place" header="ปลายทาง">
                 </Column>
                 <Column field="dest_name" header="ชื่อร้านปลายทาง">
                   <template #body="{ data, field }">
@@ -987,8 +1021,13 @@ const goList = () => {
                 </Column>
                 <Column field="route" header="เส้นทาง">
                   <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง" />
+                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง"
+                      @change="onRouteChange(data)" />
                   </template>
+                </Column>
+                <Column field="from_place" header="ต้นทาง">
+                </Column>
+                <Column field="to_place" header="ปลายทาง">
                 </Column>
                 <Column field="dest_name" header="ชื่อร้านปลายทาง">
                   <template #body="{ data, field }">
@@ -1076,8 +1115,13 @@ const goList = () => {
               </Column>
               <Column field="route_code" header="เส้นทาง">
                 <template #body="{ data, field }">
-                  <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง" />
+                  <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง"
+                    @change="onRouteChangeFuel(data)" />
                 </template>
+              </Column>
+              <Column field="from_place" header="ต้นทาง">
+              </Column>
+              <Column field="to_place" header="ปลายทาง">
               </Column>
               <Column field="item_code" header="สินค้า">
                 <template #body="{ data, field }">

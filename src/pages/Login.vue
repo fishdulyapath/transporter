@@ -6,6 +6,10 @@ import { useAuthen } from "@/stores/authen.js";
 import AuthenService from "@/services/AuthenService";
 import { useApp } from "@/stores/app.js";
 import MasterdataService from "@/services/MasterdataService";
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
+
 const storeApp = useApp();
 const store = useAuthen();
 const username = ref("");
@@ -32,8 +36,6 @@ async function handleLogin() {
 
     if (store.loginSuccess) {
       // select shop
-      localStorage.provider = provider.value;
-      localStorage.dbname = dbname.value;
 
       getErpUserPermission()
     } else {
@@ -50,6 +52,9 @@ function getErpUserPermission() {
     .then((res) => {
       console.log(res);
       if (res.success) {
+        localStorage.provider = provider.value;
+        localStorage.dbname = dbname.value;
+
         localStorage.doc_list = res.data[0].doc_list;
         localStorage.doc_approve_list = res.data[0].doc_approve_list;
         localStorage.doc_history_list = res.data[0].doc_history_list;
@@ -63,6 +68,7 @@ function getErpUserPermission() {
       }
     })
     .catch((err) => {
+      toast.add({ severity: "แจ้งเตือน", summary: "ไม่พบรหัสผู้ใช้", detail: res.message, life: 3000 });
       console.log(err);
     });
 }
