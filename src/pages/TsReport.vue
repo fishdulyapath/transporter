@@ -336,8 +336,9 @@ const getDocList = async () => {
           const dataInline = {
             car_code: "",
             doc_date: "",
-
+            doc_date2: "",
             customer_1: "",
+            customer_2: "",
             item_1: "",
             unit_1: "",
             qty_1: 0,
@@ -384,6 +385,8 @@ const getDocList = async () => {
 
           // ขากลับ
           const data2 = item.transportItems2[0] || {};
+          dataInline.doc_date2 = data2.send_date || "";
+          dataInline.customer_2 = getCustomerShow(data2.customer);
           dataInline.item_2 = data2.item_name || "";
           dataInline.unit_2 = data2.calculation_type || "";
           dataInline.qty_2 = data2.unit_price || 0;
