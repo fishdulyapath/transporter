@@ -203,31 +203,31 @@ const exportExcel = () => {
       customer_1: String(item.customer_1 || ""),
       item_1: String(item.item_1 || ""),
       unit_1: String(item.unit_1 || ""),
-      qty_1: String(item.qty_1 || 0),
-      price_1: String(item.price_1 || 0),
-      total_1: String(item.total_1 || 0),
+      qty_1: Number(item.qty_1 || 0),             // เป็นตัวเลข
+      price_1: Number(item.price_1 || 0),         // เป็นตัวเลข
+      total_1: Number(item.total_1 || 0),         // เป็นตัวเลข
       shop_1: String(item.shop_1 || ""),
       item_2: String(item.item_2 || ""),
       unit_2: String(item.unit_2 || ""),
-      qty_2: String(item.qty_2 || 0),
-      price_2: String(item.price_2 || 0),
-      total_2: String(item.total_2 || 0),
+      qty_2: Number(item.qty_2 || 0),             // เป็นตัวเลข
+      price_2: Number(item.price_2 || 0),         // เป็นตัวเลข
+      total_2: Number(item.total_2 || 0),         // เป็นตัวเลข
       shop_2: String(item.shop_2 || ""),
-      presling: String(item.presling || 0),
-      presling_price: String(item.presling_price || 0),
-      total: String(item.total || 0),
-      start_mileage: String(item.start_mileage || 0),
-      end_mileage: String(item.end_mileage || 0),
-      total_mileage: String(item.total_mileage || 0),
-      total_fuel: String(item.total_fuel || 0),
-      total_fuel_price: String(item.total_fuel_price || 0),
-      fuel_rate_price: String(item.fuel_rate_price || 0),
-      total_expenses: String(item.total_expenses || 0),
-      total_balance: String(item.total_balance || 0),
-      total_fuel_expenses: String(item.total_fuel_expenses || 0),
+      presling: Number(item.presling || 0),       // เป็นตัวเลข
+      presling_price: Number(item.presling_price || 0), // เป็นตัวเลข
+      total: Number(item.total || 0),             // เป็นตัวเลข
+      start_mileage: Number(item.start_mileage || 0),   // เป็นตัวเลข
+      end_mileage: Number(item.end_mileage || 0),       // เป็นตัวเลข
+      total_mileage: Number(item.total_mileage || 0),   // เป็นตัวเลข
+      total_fuel: Number(item.total_fuel || 0),         // เป็นตัวเลข
+      total_fuel_price: Number(item.total_fuel_price || 0), // เป็นตัวเลข
+      fuel_rate_price: Number(item.fuel_rate_price || 0),   // เป็นตัวเลข
+      total_expenses: Number(item.total_expenses || 0),     // เป็นตัวเลข
+      total_balance: Number(item.total_balance || 0),       // เป็นตัวเลข
+      total_fuel_expenses: Number(item.total_fuel_expenses || 0), // เป็นตัวเลข
       // รวมค่าใช้จ่ายตาม expensesColumns
       ...Object.fromEntries(
-        expensesColumns.value.map(column => [column, String(item[column] || 0)])
+        expensesColumns.value.map(column => [column, Number(item[column] || 0)])
       )
     };
   });

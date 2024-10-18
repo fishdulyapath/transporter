@@ -48,12 +48,14 @@ async function handleLogin() {
 }
 
 function getErpUserPermission() {
+  localStorage.provider = provider.value;
+  localStorage.dbname = dbname.value;
+  
   MasterdataService.getErpUserPermissionLogin(username.value)
     .then((res) => {
       console.log(res);
       if (res.success) {
-        localStorage.provider = provider.value;
-        localStorage.dbname = dbname.value;
+
 
         localStorage.doc_list = res.data[0].doc_list;
         localStorage.doc_approve_list = res.data[0].doc_approve_list;
@@ -68,7 +70,8 @@ function getErpUserPermission() {
       }
     })
     .catch((err) => {
-      toast.add({ severity: "แจ้งเตือน", summary: "ไม่พบรหัสผู้ใช้", detail: res.message, life: 3000 });
+      console.log(err);
+      toast.add({ severity: "แจ้งเตือน", summary: "ไม่พบรหัสผู้ใช้", detail: err, life: 3000 });
       console.log(err);
     });
 }

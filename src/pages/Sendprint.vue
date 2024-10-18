@@ -787,9 +787,12 @@ watch(
 
 <template>
 
-  <div class="grid formgrid p-fluid mb-2" style="font-size: 13px;">
-    <div class="field my-1 col-12">
-      <h2 class="font-medium text-900 text-center">{{ company_name.name }}</h2>
+  <div class="grid formgrid p-fluid mb-2" style="font-size: 14px;  color:#000;">
+    <div class="field mt-1 col-12">
+      <h2 class="font-medium text-900 text-center mb-0">{{ company_name.name }}</h2>
+    </div>
+    <div class="field mt-0 col-12">
+      <h2 class="font-medium text-900 text-center mt-0">ใบปฏิบ้ติงาน</h2>
     </div>
     <div class="field my-1 col-3 ">
       <p class="my-0">เลขที่ : {{ form_model.doc_no }}</p>
@@ -811,7 +814,7 @@ watch(
     </div>
   </div>
 
-  <DataTable :value="transportItems1" style="font-size: 11px !important;" size="small" showGridlines>
+  <DataTable :value="transportItems1" style="font-size: 12px !important;   color:#000;" size="small" showGridlines>
     <Column header="#" class="text-center">
       <template #body="{ index }">
         {{ index + 1 }}
@@ -876,8 +879,8 @@ watch(
 
 
   <!-- ตาราง ค่าใช้จ่ายรวม -->
-  <p class="mb-1" style="font-size: 12px;">ค่าใช้จ่ายรวม</p>
-  <DataTable :value="expenses1" style="font-size: 11px !important;" size="small" showGridlines>
+  <p class="mb-1" style="font-size: 12px;  color:#000;">ค่าใช้จ่ายรวม</p>
+  <DataTable :value="expenses1" style="font-size: 12px !important;  color:#000;" size="small" showGridlines>
 
     <Column field="item_name" header="สินค้า" />
     <Column field="amount" header="จำนวน" style="width:20%" class="text-right">
@@ -895,11 +898,11 @@ watch(
   </DataTable>
 
   <!-- ตาราง ค่าเชื้อเพลิง -->
-  <p class="mb-1" style="font-size: 12px;">ค่าเชื้อเพลิง</p>
+  <p class="mb-1" style="font-size: 12px;   color:#000;">ค่าเชื้อเพลิง</p>
   <div class="grid formgrid p-fluid mt-2" style="font-size: 13px;">
     <div class=" col-8 ">
 
-      <DataTable :value="fuelDetails1" style="font-size: 11px !important;" size="small" showGridlines>
+      <DataTable :value="fuelDetails1" style="font-size: 12px !important;" size="small" showGridlines>
 
         <Column field="item_name" header="สินค้า" />
         <Column field="amount" header="จำนวน" class="text-right">
@@ -927,7 +930,7 @@ watch(
       </DataTable>
     </div>
     <div class=" col-4 ">
-      <DataTable :value="tableMile" style="font-size: 11px !important;" size="small" showGridlines>
+      <DataTable :value="tableMile" style="font-size: 12px !important;" size="small" showGridlines>
 
         <Column field="name" header="ชื่อ"></Column>
         <Column field="amount" header="" class="text-right">
@@ -941,7 +944,7 @@ watch(
     </div>
   </div>
 
-  <div class="grid signature-section" style="font-size: 13px;">
+  <div class="grid signature-section" style="font-size: 13px;  color:#000;">
     <div class="field mb-1 col-12 text-right">
       <span>ลงชื่อ.............................................ผู้รับเงิน</span>
     </div>
@@ -958,6 +961,20 @@ th {
   padding-bottom: 8px !important;
 }
 
+.p-datatable .p-datatable-thead > tr > th {
+  color: #000 !important;
+  border: 1px solid #000 !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  color: #000 !important;
+  border: 1px solid #000 !important;
+}
+
+.p-datatable .p-datatable-tfoot > tr > td {
+  color: #000 !important;
+  border: 1px solid #000 !important;
+}
 .signature-section {
   position: absolute;
   bottom: 40px;
@@ -970,8 +987,9 @@ th {
 
 @page {
   size: a4 portrait;
-  margin: 3mm;
-  font-size: 11px !important;
-  scale: 50%;
+  margin: 2mm;
+  font-size: 14px !important;
+  color:#000;
+  scale: 70%;
 }
 </style>

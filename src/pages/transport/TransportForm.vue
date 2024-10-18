@@ -1141,12 +1141,25 @@ const goList = () => {
                   <InputText type="text" v-model="data[field]" fluid />
                 </template>
               </Column>
+ 
+
               <Column field="route_code" header="เส้นทาง">
-                <template #body="{ data, field }">
-                  <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง"
-                    @change="onRouteChangeFuel(data)" />
-                </template>
-              </Column>
+                  <template #body="{ data, field }">
+                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="route_label" optionValue="code" placeholder="เลือกเส้นทาง"
+                      @change="onRouteChangeFuel(data)">
+
+                      <template #option="{ option }">
+
+                        <span>{{ option.route_label }}</span>
+                      </template>
+                      <template #value="{ value }">
+
+                        <span v-if="value != ''">{{ value }}</span>
+                        <span v-else>เลือกเส้นทาง</span>
+                      </template>
+                    </Dropdown>
+                  </template>
+                </Column>
               <Column field="from_place" header="ต้นทาง">
               </Column>
               <Column field="to_place" header="ปลายทาง">
