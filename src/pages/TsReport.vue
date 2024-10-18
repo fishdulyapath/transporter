@@ -159,7 +159,7 @@ const getEmployee = () => {
 const exportExcel = () => {
   // 1. กำหนดหัวตารางให้ตรงกับ DataTable
   const headers = [
-    { header: 'วันที่', key: 'doc_date' },
+    { header: 'วันที่ไป', key: 'doc_date' },
     { header: 'ทะเบียนรถ', key: 'car_code' },
     { header: 'ลูกค้า', key: 'customer_1' },
     { header: 'สินค้าไป', key: 'item_1' },
@@ -168,6 +168,8 @@ const exportExcel = () => {
     { header: 'ราคา', key: 'price_1' },
     { header: 'ค่าบรรทุกไป', key: 'total_1' },
     { header: 'สถานที่ลง', key: 'shop_1' },
+    { header: 'วันที่กลับ', key: 'doc_date2' },
+    { header: 'ลูกค้า', key: 'customer_2' },
     { header: 'สินค้ากลับ', key: 'item_2' },
     { header: 'หน่วย', key: 'unit_2' },
     { header: 'จำนวน', key: 'qty_2' },
@@ -207,6 +209,8 @@ const exportExcel = () => {
       price_1: Number(item.price_1 || 0),         // เป็นตัวเลข
       total_1: Number(item.total_1 || 0),         // เป็นตัวเลข
       shop_1: String(item.shop_1 || ""),
+      doc_date2: String(item.doc_date2 || ""),
+      customer_2: String(item.customer_2 || ""),
       item_2: String(item.item_2 || ""),
       unit_2: String(item.unit_2 || ""),
       qty_2: Number(item.qty_2 || 0),             // เป็นตัวเลข
@@ -710,7 +714,7 @@ function exportExcel2(doc_no, jsonData) {
           </Panel>
           <div class="p-3">
             <DataTable :value="data_report" size="small" showGridlines resizableColumns columnResizeMode="fit">
-              <Column field="doc_date" header="วันที่" />
+              <Column field="doc_date" header="วันที่ไป" />
               <Column field="car_code" header="ทะเบียนรถ" />
               <Column field="customer_1" header="ลูกค้า" />
               <Column field="item_1" header="สินค้าไป" />
@@ -731,6 +735,8 @@ function exportExcel2(doc_no, jsonData) {
                 </template>
               </Column>
               <Column field="shop_1" header="สถานที่ลง" />
+              <Column field="doc_date2" header="วันที่กลับ" />
+              <Column field="customer_2" header="ลูกค้า" />
               <Column field="item_2" header="สินค้ากลับ" />
               <Column field="unit_2" header="หน่วย" />
               <Column field="qty_2" header="จำนวน" class="text-right">
