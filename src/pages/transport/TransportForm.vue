@@ -375,6 +375,7 @@ const addRow = (items) => {
     unit_price: 0,
     allowance: 0,
     revenue: 0,
+    route: "",
 
   });
 
@@ -495,7 +496,12 @@ const getRouteList = () => {
     .then((response) => {
       console.log("routeDetails", response)
       if (response.success) {
-        routeDetails.value = response.data;
+
+        response.data.forEach((route) => {
+
+          routeDetails.value.push({ code: route.code, from_place: route.from_place, to_place: route.to_place, route_label: route.code + '~' + route.from_place + ' - ' + route.to_place });
+        });
+
 
       } else {
         toast.add({
@@ -920,8 +926,19 @@ const goList = () => {
                 </Column>
                 <Column field="route" header="เส้นทาง">
                   <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง"
-                      @change="onRouteChange(data)" />
+                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="route_label" optionValue="code" placeholder="เลือกเส้นทาง"
+                      @change="onRouteChange(data)">
+
+                      <template #option="{ option }">
+
+                        <span>{{ option.route_label }}</span>
+                      </template>
+                      <template #value="{ value }">
+
+                        <span v-if="value != ''">{{ value }}</span>
+                        <span v-else>เลือกเส้นทาง</span>
+                      </template>
+                    </Dropdown>
                   </template>
                 </Column>
                 <Column field="from_place" header="ต้นทาง">
@@ -1021,8 +1038,19 @@ const goList = () => {
                 </Column>
                 <Column field="route" header="เส้นทาง">
                   <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="code" optionValue="code" placeholder="เลือกเส้นทาง"
-                      @change="onRouteChange(data)" />
+                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="route_label" optionValue="code" placeholder="เลือกเส้นทาง"
+                      @change="onRouteChange(data)">
+
+                      <template #option="{ option }">
+
+                        <span>{{ option.route_label }}</span>
+                      </template>
+                      <template #value="{ value }">
+
+                        <span v-if="value != ''">{{ value }}</span>
+                        <span v-else>เลือกเส้นทาง</span>
+                      </template>
+                    </Dropdown>
                   </template>
                 </Column>
                 <Column field="from_place" header="ต้นทาง">

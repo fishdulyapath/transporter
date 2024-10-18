@@ -291,7 +291,7 @@ function getUserData(data) {
         <div class="confirmation-content">
           <div class="grid formgrid p-fluid">
             <div class="field mb-2 col-12 md:col-6">
-              <label class="font-bold text-900">รายการตรวจนับ</label>
+              <label class="font-bold text-900">รายการขนส่ง</label>
               <SelectButton v-model="from_permission.doc_list" :options="[
                 { name: 'No', code: '0' },
                 { name: 'Yes', code: '1' },
@@ -299,14 +299,14 @@ function getUserData(data) {
             </div>
 
             <div class="field mb-2 col-12 md:col-6">
-              <label class="font-bold text-900">อนุมัติปรับราคา</label>
+              <label class="font-bold text-900">อนุมัติรายการขนส่ง</label>
               <SelectButton v-model="from_permission.doc_approve_list" :options="[
                 { name: 'No', code: '0' },
                 { name: 'Yes', code: '1' },
               ]" optionLabel="name" optionValue="code" :multiple="false" />
             </div>
             <div class="field mb-2 col-12 md:col-6">
-              <label class="font-bold text-900">ประวัติรายการตรวจนับ</label>
+              <label class="font-bold text-900">ประวัติรายการขนส่ง</label>
               <SelectButton v-model="from_permission.doc_history_list" :options="[
                 { name: 'No', code: '0' },
                 { name: 'Yes', code: '1' },

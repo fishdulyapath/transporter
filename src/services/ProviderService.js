@@ -11,8 +11,8 @@ const instanceApi = (authentication = true) =>{
 
     // console.log("API URL : ", process.env.VUE_APP_API);
 
-    //http://43.240.113.43:8776/TransporterRestServiceAPI/service/stockservice/
-    const http = axios.create({ baseURL: 'http://wrh01.dyndns.org:8088/TransporterRestServiceAPI/service/transportservice/'});
+    //http://wrh01.dyndns.org:8088/TransporterRestServiceAPI/service/stockservice/
+    const http = axios.create({ baseURL: 'http://192.168.4.12:8088/TransporterRestServiceAPI/service/transportservice/'});
     http.defaults.headers.common['Content-Type'] = 'application/json';
 
     http.interceptors.response.use(
