@@ -28,6 +28,13 @@ export const menus = [
     children: [],
   },
   {
+    title: "รายการจองรถ",
+    name: "reservedoclist",
+    icon: "pi pi-file",
+    to: "/reservedoclist",
+    children: [],
+  },
+  {
     title: "ทะเบียนรถ",
     name: "carlist",
     icon: "pi pi-car",

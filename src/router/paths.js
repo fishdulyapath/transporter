@@ -19,6 +19,14 @@ export default [
     component: () => import("../pages/Dashboard.vue"),
   },
   {
+    path: "/reservedoclist",
+    name: "reservedoclist",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/reserve/reserve_doc_list.vue"),
+  },
+  {
     path: "/carlist",
     name: "carlist",
     meta: {
