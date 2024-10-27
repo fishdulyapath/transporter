@@ -165,9 +165,9 @@ export default {
       .post(`/createTSDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
       .then((res) => res.data);
   },
-  updateCar(roworder, code, brand, province, car_type, register_date) {
+  updateCar(roworder, code, brand, province, car_type,car_type_2, register_date,driver,weight) {
     return instanceApi(true)
-      .get(`/updateCar?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}&code=${code}&province=${province}&brand=${brand}&car_type=${car_type}&register_date=${register_date}`)
+      .get(`/updateCar?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}&code=${code}&province=${province}&brand=${brand}&car_type=${car_type}&register_date=${register_date}&driver=${driver}&weight=${weight}&car_type_2=${car_type_2}`)
       .then((res) => res.data);
   },
   updateRoute(roworder, code, from_place, to_place) {

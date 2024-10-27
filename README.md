@@ -155,3 +155,10 @@ CREATE TABLE ts_transport_items
   item_name character varying(255),
   CONSTRAINT ts_transport_items_pk PRIMARY KEY (roworder)
 );
+
+
+ALTER TABLE public.ts_car ADD COLUMN car_type_2 character varying(255);
+ALTER TABLE public.ts_car ADD COLUMN driver character varying(255);
+ALTER TABLE public.ts_car ADD COLUMN weight character varying(255);
+ALTER TABLE public.ts_car ADD COLUMN status smallint;
+ALTER TABLE public.ts_car ALTER COLUMN status SET DEFAULT 0;
