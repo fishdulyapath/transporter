@@ -987,7 +987,7 @@ th {
 
 @page {
   size: a4 portrait;
-  margin: 2mm;
+  margin: 3mm;
   font-size: 14px !important;
   color:#000;
   scale: 70%;
