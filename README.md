@@ -156,6 +156,41 @@ CREATE TABLE ts_transport_items
   CONSTRAINT ts_transport_items_pk PRIMARY KEY (roworder)
 );
 
+CREATE TABLE public.ts_reserve_doc
+(
+  roworder serial,
+  doc_no character varying(255) NOT NULL,
+  doc_date date,
+  creator_code character varying(255),
+  remark text,
+  car_pack_type character varying(255),
+  receive_date date,
+  arrival_date date,
+  request_receive_date date,
+  request_arrival_date date,
+  pickup_place character varying(255),
+  dropoff_place character varying(255),
+  car_code character varying(255),
+  driver_code character varying(255),
+  weight character varying(255),
+  is_close smallint DEFAULT 0,
+  status smallint DEFAULT 0,
+  create_datetime timestamp without time zone DEFAULT now(),
+  receive_remark character varying(255),
+  receive_date_time timestamp without time zone DEFAULT now(),
+  receive_user_code character varying(255),
+  send_remark character varying(255),
+  send_approve_user character varying(255),
+  send_date_time timestamp without time zone DEFAULT now(),
+  cancel_remark character varying(255),
+  cancel_date_time timestamp without time zone DEFAULT now(),
+  cancel_user character varying(255),
+  success_date_time timestamp without time zone DEFAULT now(),
+  success_date date DEFAULT now(),
+  success_user character varying(255),
+  CONSTRAINT ts_reserve_doc_pk PRIMARY KEY (doc_no)
+)
+
 
 ALTER TABLE public.ts_car ADD COLUMN car_type_2 character varying(255);
 ALTER TABLE public.ts_car ADD COLUMN driver character varying(255);

@@ -29,7 +29,14 @@ function checkPermission(data) {
       show = true;
     } else if (data == "routelist" && localStorage.doc_route_list == "1") {
       show = true;
+    } else if (data == "reservedoclist" && localStorage.doc_reserve_list == "1") {
+      show = true;
+    } else if (data == "reservedocapprovelist" && localStorage.doc_reserve_approve_list == "1") {
+      show = true;
+    } else if (data == "reservedochistorylist" && localStorage.doc_reserve_history_list == "1") {
+      show = true;
     }
+
 
 
   } else {

@@ -16,6 +16,11 @@ export default {
       .get(`/getCarlist?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}`)
       .then((res) => res.data);
   },
+  getCarReserveList(search) {
+    return instanceApi(true)
+      .get(`/getCarReserveList?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}`)
+      .then((res) => res.data);
+  },
   getCustomer() {
     return instanceApi(true)
       .get(`/getCustomer?dbname=${localStorage.dbname}&provider=${localStorage.provider}`)
@@ -107,7 +112,21 @@ export default {
       .get(`/getTsDocHistoryList?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}&status=${status}`)
       .then((res) => res.data);
   },
-
+  getReserveCarlist(search, from_date, to_date, status) {
+    return instanceApi(true)
+      .get(`/getReserveCarlist?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}&status=${status}`)
+      .then((res) => res.data);
+  },
+  getReserveCarHistorylist(search, from_date, to_date, status) {
+    return instanceApi(true)
+      .get(`/getReserveCarHistorylist?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}&status=${status}`)
+      .then((res) => res.data);
+  },
+  getReserveCarApprovelist(search, from_date, to_date) {
+    return instanceApi(true)
+      .get(`/getReserveCarApprovelist?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}&fromdate=${from_date}&todate=${to_date}`)
+      .then((res) => res.data);
+  },
   getErpUserPermissionLogin(search) {
     return instanceApi(true)
       .get(`/getErpUserPermissionLogin?dbname=${localStorage.dbname}&provider=${localStorage.provider}&search=${search}`)
@@ -121,7 +140,7 @@ export default {
   upDatePermission(data, user) {
     return instanceApi(true)
       .post(
-        `/upDatePermission?dbname=${localStorage.dbname}&provider=${localStorage.provider}&user=${user}&doc_list=${data.doc_list}&doc_approve_list=${data.doc_approve_list}&doc_history_list=${data.doc_history_list}&doc_report_list=${data.doc_report_list}&doc_car_list=${data.doc_car_list}&doc_route_list=${data.doc_route_list}`
+        `/upDatePermission?dbname=${localStorage.dbname}&provider=${localStorage.provider}&user=${user}&doc_list=${data.doc_list}&doc_approve_list=${data.doc_approve_list}&doc_history_list=${data.doc_history_list}&doc_report_list=${data.doc_report_list}&doc_car_list=${data.doc_car_list}&doc_route_list=${data.doc_route_list}&doc_reserve_list=${data.doc_reserve_list}&doc_reserve_approve_list=${data.doc_reserve_approve_list}&doc_reserve_history_list=${data.doc_reserve_history_list}`
       )
       .then((res) => res.data);
   },
@@ -165,9 +184,32 @@ export default {
       .post(`/createTSDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
       .then((res) => res.data);
   },
-  updateCar(roworder, code, brand, province, car_type,car_type_2, register_date,driver,weight) {
+  updateCar(roworder, code, brand, province, car_type, car_type_2, register_date, driver, weight) {
     return instanceApi(true)
       .get(`/updateCar?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}&code=${code}&province=${province}&brand=${brand}&car_type=${car_type}&register_date=${register_date}&driver=${driver}&weight=${weight}&car_type_2=${car_type_2}`)
+      .then((res) => res.data);
+  },
+
+  updateReserveCar(roworder, doc_date, doc_no, creator_code, car_pack_type, request_receive_date, request_arrival_date, pickup_place, dropoff_place, remark) {
+    return instanceApi(true)
+      .get(`/updateReserveCar?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}&docno=${doc_no}&docdate=${doc_date}&creatorcode=${creator_code}&carpacktype=${car_pack_type}&requestreceivedate=${request_receive_date}&requestarrivaldate=${request_arrival_date}&pickupplace=${pickup_place}&dropoffplace=${dropoff_place}&remark=${remark}`)
+      .then((res) => res.data);
+  },
+  updateReceiveStatus(doc_no, car_code, status_selected, receive_remark, driver_code, weight,usercode ,old_car) {
+    return instanceApi(true)
+      .get(`/updateReceiveStatus?dbname=${localStorage.dbname}&provider=${localStorage.provider}&docno=${doc_no}&car_code=${car_code}&status_selected=${status_selected}&receive_remark=${receive_remark}&driver_code=${driver_code}&weight=${weight}&usercode=${usercode}&old_car=${old_car}`)
+      .then((res) => res.data);
+  },
+  
+  sendApproveReserveDoc(docno) {
+    return instanceApi(true)
+      .get(`/approveReserveDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&docno=${docno}`)
+      .then((res) => res.data);
+  },
+
+  sendSuccessReserveDoc(doc_no,arrival_date,send_remark,usercode) {
+    return instanceApi(true)
+      .get(`/sendSuccessReserveDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&doc_no=${doc_no}&arrival_date=${arrival_date}&send_remark=${send_remark}&usercode=${usercode}`)
       .then((res) => res.data);
   },
   updateRoute(roworder, code, from_place, to_place) {
@@ -181,6 +223,21 @@ export default {
       .get(`/deleteCar?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}`)
       .then((res) => res.data);
   },
+  deleteReserveDoc(doc_no) {
+    return instanceApi(true)
+      .get(`/deleteReserveDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}`)
+      .then((res) => res.data);
+  },
+  successSendReserveDoc(doc_no,user_code) {
+    return instanceApi(true)
+      .get(`/successSendReserveDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&doc_no=${doc_no}&user_code=${user_code}`)
+      .then((res) => res.data);
+  },
+  cancelReserveDoc(doc_no,car_code,remark,user) {
+    return instanceApi(true)
+      .get(`/cancelReserveDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&doc_no=${doc_no}&car_code=${car_code}&remark=${remark}&user=${user}`)
+      .then((res) => res.data);
+  },
   deleteRoute(roworder) {
     return instanceApi(true)
       .get(`/deleteRoute?dbname=${localStorage.dbname}&provider=${localStorage.provider}&roworder=${roworder}`)
@@ -189,6 +246,12 @@ export default {
   createCar(postData) {
     return instanceApi(true)
       .post(`/createCar?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
+      .then((res) => res.data);
+  },
+
+  createReserveCar(postData) {
+    return instanceApi(true)
+      .post(`/createReserveCar?dbname=${localStorage.dbname}&provider=${localStorage.provider}`, postData)
       .then((res) => res.data);
   },
   createRoute(postData) {

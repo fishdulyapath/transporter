@@ -27,6 +27,24 @@ export default [
     component: () => import("../pages/reserve/reserve_doc_list.vue"),
   },
   {
+    path: "/reservedochistorylist",
+    name: "reservedochistorylist",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/reserve/reserve_doc_history.vue"),
+  },
+  
+  {
+    path: "/reservedocapprovelist",
+    name: "reservedocapprovelist",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/reserve/reserve_approve_list.vue"),
+  },
+  
+  {
     path: "/carlist",
     name: "carlist",
     meta: {

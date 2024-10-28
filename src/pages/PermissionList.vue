@@ -48,7 +48,9 @@ const from_permission = ref({
   doc_report_list: "0",
   doc_car_list: "0",
   doc_route_list: "0",
-
+  doc_reserve_list: "0",
+  doc_reserve_history_list: "0",
+  doc_reserve_approve_list: "0",
 });
 
 onMounted(() => {
@@ -102,6 +104,10 @@ function doReceive(data) {
   from_permission.value.doc_report_list = data.doc_report_list;
   from_permission.value.doc_car_list = data.doc_car_list;
   from_permission.value.doc_route_list = data.doc_route_list;
+  from_permission.value.doc_reserve_list = data.doc_reserve_list;
+  from_permission.value.doc_reserve_history_list = data.doc_reserve_history_list;
+  from_permission.value.doc_reserve_approve_list = data.doc_reserve_approve_list;
+
 
 
 }
@@ -276,6 +282,33 @@ function getUserData(data) {
                 </template>
               </Column>
 
+              <Column field="doc_reserve_list" bodyStyle="text-align:center">
+                <template #header>
+                  <div class="text-center w-full">รายการจองรถ</div>
+                </template>
+                <template #body="slotProps">
+                  <b class="text-green-500" v-if="slotProps.data.doc_reserve_list == '1'">Yes</b>
+                  <b class="text-red-500" v-if="slotProps.data.doc_reserve_list == '0'">No</b>
+                </template>
+              </Column>
+              <Column field="doc_reserve_history_list" bodyStyle="text-align:center">
+                <template #header>
+                  <div class="text-center w-full">อนุมัติรายการจองรถ</div>
+                </template>
+                <template #body="slotProps">
+                  <b class="text-green-500" v-if="slotProps.data.doc_reserve_history_list == '1'">Yes</b>
+                  <b class="text-red-500" v-if="slotProps.data.doc_reserve_history_list == '0'">No</b>
+                </template>
+              </Column>
+              <Column field="doc_reserve_approve_list" bodyStyle="text-align:center">
+                <template #header>
+                  <div class="text-center w-full">ประวัติการจองรถ</div>
+                </template>
+                <template #body="slotProps">
+                  <b class="text-green-500" v-if="slotProps.data.doc_reserve_approve_list == '1'">Yes</b>
+                  <b class="text-red-500" v-if="slotProps.data.doc_reserve_approve_list == '0'">No</b>
+                </template>
+              </Column>
 
               <Column bodyStyle="text-align:right">
                 <template #body="slotProps">
@@ -329,6 +362,27 @@ function getUserData(data) {
             <div class="field mb-2 col-12 md:col-6">
               <label class="font-bold text-900">กำหนดเส้นทาง</label>
               <SelectButton v-model="from_permission.doc_route_list" :options="[
+                { name: 'No', code: '0' },
+                { name: 'Yes', code: '1' },
+              ]" optionLabel="name" optionValue="code" :multiple="false" />
+            </div>
+            <div class="field mb-2 col-12 md:col-6">
+              <label class="font-bold text-900">รายการจองรถ</label>
+              <SelectButton v-model="from_permission.doc_reserve_list" :options="[
+                { name: 'No', code: '0' },
+                { name: 'Yes', code: '1' },
+              ]" optionLabel="name" optionValue="code" :multiple="false" />
+            </div>
+            <div class="field mb-2 col-12 md:col-6">
+              <label class="font-bold text-900">อนุมัติรายการจองรถ</label>
+              <SelectButton v-model="from_permission.doc_reserve_history_list" :options="[
+                { name: 'No', code: '0' },
+                { name: 'Yes', code: '1' },
+              ]" optionLabel="name" optionValue="code" :multiple="false" />
+            </div>
+            <div class="field mb-2 col-12 md:col-6">
+              <label class="font-bold text-900">ประวัติการจองรถ</label>
+              <SelectButton v-model="from_permission.doc_reserve_approve_list" :options="[
                 { name: 'No', code: '0' },
                 { name: 'Yes', code: '1' },
               ]" optionLabel="name" optionValue="code" :multiple="false" />

@@ -50,7 +50,7 @@ async function handleLogin() {
 function getErpUserPermission() {
   localStorage.provider = provider.value;
   localStorage.dbname = dbname.value;
-  
+
   MasterdataService.getErpUserPermissionLogin(username.value)
     .then((res) => {
       console.log(res);
@@ -63,7 +63,9 @@ function getErpUserPermission() {
         localStorage.doc_report_list = res.data[0].doc_report_list;
         localStorage.doc_car_list = res.data[0].doc_car_list;
         localStorage.doc_route_list = res.data[0].doc_route_list;
-
+        localStorage.doc_reserve_list = res.data[0].doc_reserve_list;
+        localStorage.doc_reserve_history_list = res.data[0].doc_reserve_history_list;
+        localStorage.doc_reserve_approve_list = res.data[0].doc_reserve_approve_list;
         setTimeout(async () => {
           router.push({ name: "dashboard" });
         }, 1000);
@@ -131,7 +133,7 @@ onMounted(() => {
   <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 flex align-items-center justify-content-center">
     <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6" v-if="!showShopList">
       <div class="text-center mb-5 mt-5">
-        <img src="@/assets/logo.png" alt="Image" height="150"  class="mb-3 w-full" />
+        <img src="@/assets/logo.png" alt="Image" height="150" class="mb-3 w-full" />
 
         <!-- <span class="text-600 font-medium line-height-3">Don't have an account?</span>
         <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"

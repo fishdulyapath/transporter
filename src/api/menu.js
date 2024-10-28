@@ -30,8 +30,22 @@ export const menus = [
   {
     title: "รายการจองรถ",
     name: "reservedoclist",
-    icon: "pi pi-file",
+    icon: "pi pi-car",
     to: "/reservedoclist",
+    children: [],
+  },
+  {
+    title: "อนุมัติรายการจองรถ",
+    name: "reservedocapprovelist",
+    icon: "pi pi-check-square",
+    to: "/reservedocapprovelist",
+    children: [],
+  },
+  {
+    title: "ประวัติการจองรถ",
+    name: "reservedochistorylist",
+    icon: "pi pi-file-pdf",
+    to: "/reservedochistorylist",
     children: [],
   },
   {

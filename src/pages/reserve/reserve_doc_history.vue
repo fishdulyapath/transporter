@@ -102,20 +102,6 @@
                       <td colspan="3" style="padding-top: 8px !important;"><strong>หมายเหตุ : </strong> {{ slotProps.data.cancel_remark }}</td>
                     </tr>
 
-                    <tr style="font-size: 18px;">
-                      <td colspan="5" style="padding-top: 8px !important;">
-                        <div style="display: flex; gap: 10px;">
-                          <Button v-if="slotProps.data.status == '0'" icon="pi pi-upload" label="ส่งอนุมัติ" class="p-button-success text-white" style="width: 200px;"
-                            @click="onSendApprove(slotProps.data)" />
-                          <Button v-if="slotProps.data.status == '0'" icon="pi pi-pencil" label="แก้ไข" class="p-button-warning text-white" style="width: 200px;"
-                            @click="openDialog(slotProps.data)" />
-                          <Button v-if="slotProps.data.status == '0'" icon="pi pi-trash" label="ลบเอกสาร" class="p-button-danger" style="width: 200px;"
-                            @click="ondeleteDoc(slotProps.data)" />
-                          <Button v-if="slotProps.data.status == '3'" icon="pi pi-check" label="ยืนยัน" class="p-button-success" style="width: 200px;"
-                            @click="onSuccessDoc(slotProps.data)" />
-                        </div>
-                      </td>
-                    </tr>
 
                   </table>
                 </template>
@@ -448,9 +434,9 @@ const getEmployee = () => {
 };
 
 onMounted(() => {
-  storeApp.setActivePage("reservedoclist");
+  storeApp.setActivePage("reservedochistorylist");
   storeApp.setActiveChild("");
-  storeApp.setPageTitle("รายการจองรถ");
+  storeApp.setPageTitle("ประวัติการจองรถ");
   var date = new Date();
   var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
   var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -512,7 +498,7 @@ async function getReserveCarlist() {
     status = selectedStatus.value.code;
   }
 
-  await MasterdataService.getReserveCarlist(search.value, from_datex, to_datex, status)
+  await MasterdataService.getReserveCarHistorylist(search.value, from_datex, to_datex, status)
     .then((res) => {
       console.log(res);
       if (res.success) {
