@@ -131,8 +131,7 @@
                 <div class="p-field mt-2">
                   <label class="">เลือกรถ</label>
 
-                  <DataTable :value="carsDetails" selectionMode="single" v-model:selection="selectedCar" paginator :rows="5" :filters="filters"
-                    :globalFilterFields="['driver_name', 'code', 'weight']" :rowsPerPageOptions="[5, 10, 20]">
+                  <DataTable :value="carsDetails" scrollable scrollHeight="350px" :filters="filters" :globalFilterFields="['driver_name', 'code', 'weight']">
 
                     <!-- ช่องค้นหาหลัก (Global Search) -->
                     <template #header>
@@ -142,7 +141,11 @@
                       </span>
                     </template>
 
-                    <Column selectionMode="single" headerStyle="width: 3em;"></Column>
+                    <Column bodyStyle="max-width: 100px;">
+                      <template #body="slotProps">
+                        <Button :value="slotProps.data" label="เลือก" @click="onSelect(slotProps.data)" v-if="slotProps.data.status == 0" />
+                      </template>
+                    </Column>
                     <Column field="code" header="ทะเบียนรถ" filter sortable></Column>
                     <Column field="driver_name" header="คนขับ" filter sortable></Column>
                     <Column field="weight" header="น้ำหนัก" sortable></Column>
@@ -460,7 +463,7 @@ const onSelect = (car) => {
 };
 
 const deleteDoc = async (car) => {
-  console.log(carForm.value.cancel_remark);
+  console.log(carForm.value);
   await MasterdataService.cancelReserveDoc(carForm.value.doc_no, carForm.value.car_code, carForm.value.cancel_remark, localStorage._usercode)
     .then((res) => {
       console.log(res);
@@ -671,7 +674,7 @@ const openDialog = async (car = null) => {
     if (carForm.value.car_code == '') {
       selectedCar.value = null;
     } else {
-      selectedCar.value = carsDetails.value.find(c => c.code === carForm.value.car_code) || null;
+      selectedCar.value = carsDetailsFull.value.find(c => c.code === carForm.value.car_code) || null;
     }
     carForm.value.old_car_code = carForm.value.car_code;
     carForm.value.receive_remark = carForm.value.receive_remark ?? '';
@@ -691,7 +694,7 @@ const openDialog2 = async (car = null) => {
   carForm.value.status_selected = (carForm.value.status == "0" ? "1" : carForm.value.status);
   carForm.value.send_remark = carForm.value.send_remark ?? '';
   carForm.value.old_car_code = carForm.value.car_code;
-  console.log(selectedCar.value);
+
   displaySendDialog.value = true;
 };
 const openDialog3 = async (car = null) => {
@@ -746,7 +749,8 @@ const sendApproveDoc = async () => {
 }
 
 const sendSuccessDoc = async () => {
-  await MasterdataService.sendSuccessReserveDoc(carForm.value.doc_no, carForm.value.arrival_date, carForm.value.send_remark, localStorage._usercode)
+  var arrival_date = Utils.getDateFormatPG(carForm.value.arrival_date);
+  await MasterdataService.sendSuccessReserveDoc(carForm.value.doc_no, arrival_date, carForm.value.send_remark, localStorage._usercode, carForm.value.car_code)
     .then((res) => {
       console.log(res);
       if (res.success) {
@@ -754,6 +758,7 @@ const sendSuccessDoc = async () => {
           severity: "success",
           summary: "สำเร็จ",
           detail: "ส่งมอบสำเร็จ",
+          life: 3000
         });
         getReserveCarlist();
         showConfirmApproveDialog.value = false;
@@ -764,6 +769,7 @@ const sendSuccessDoc = async () => {
           severity: "error",
           summary: "ส่งมอบไม่สำเร็จ",
           detail: res.message,
+          life: 3000
         });
         showConfirmApproveDialog.value = false;
         showConfirmSend.value = false;

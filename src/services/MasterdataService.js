@@ -207,9 +207,9 @@ export default {
       .then((res) => res.data);
   },
 
-  sendSuccessReserveDoc(doc_no,arrival_date,send_remark,usercode) {
+  sendSuccessReserveDoc(doc_no,arrival_date,send_remark,usercode,carcode) {
     return instanceApi(true)
-      .get(`/sendSuccessReserveDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&doc_no=${doc_no}&arrival_date=${arrival_date}&send_remark=${send_remark}&usercode=${usercode}`)
+      .get(`/sendSuccessReserveDoc?dbname=${localStorage.dbname}&provider=${localStorage.provider}&doc_no=${doc_no}&arrival_date=${arrival_date}&send_remark=${send_remark}&usercode=${usercode}&car_code=${carcode}`)
       .then((res) => res.data);
   },
   updateRoute(roworder, code, from_place, to_place) {

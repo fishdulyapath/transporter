@@ -197,3 +197,21 @@ ALTER TABLE public.ts_car ADD COLUMN driver character varying(255);
 ALTER TABLE public.ts_car ADD COLUMN weight character varying(255);
 ALTER TABLE public.ts_car ADD COLUMN status smallint;
 ALTER TABLE public.ts_car ALTER COLUMN status SET DEFAULT 0;
+
+ALTER TABLE public.ts_permission ADD COLUMN doc_reserve_list smallint;
+ALTER TABLE public.ts_permission ALTER COLUMN doc_reserve_list SET DEFAULT 0;
+
+
+ALTER TABLE public.ts_permission ADD COLUMN doc_reserve_history_list smallint;
+ALTER TABLE public.ts_permission ALTER COLUMN doc_reserve_history_list SET DEFAULT 0;
+
+ALTER TABLE public.ts_permission ADD COLUMN doc_reserve_approve_list smallint;
+ALTER TABLE public.ts_permission ALTER COLUMN doc_reserve_approve_list SET DEFAULT 0;
+
+
+ALTER TABLE public.ts_car ADD COLUMN status smallint;
+ALTER TABLE public.ts_car ALTER COLUMN status SET DEFAULT 0;
+ALTER TABLE public.ts_car ADD COLUMN weight character varying(255);
+ALTER TABLE public.ts_car ADD COLUMN driver character varying(255);
+ALTER TABLE public.ts_car ADD COLUMN car_type_2 character varying(255);
+ALTER TABLE public.ts_car ALTER COLUMN car_type_2 SET DEFAULT 0;

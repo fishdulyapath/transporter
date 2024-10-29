@@ -251,6 +251,7 @@ const deleteCar = async (car) => {
                     severity: "success",
                     summary: "สำเร็จ",
                     detail: "ลบข้อมูลสำเร็จ",
+                    life: 5000 
                 });
                 getCarList();
                 showConfirmDeleteDialog.value = false;
@@ -259,6 +260,7 @@ const deleteCar = async (car) => {
                     severity: "error",
                     summary: "ลบไม่สำเร็จ",
                     detail: res.message,
+                    life: 5000 
                 });
                 showConfirmDeleteDialog.value = false;
             }
@@ -422,7 +424,7 @@ const resetForm = () => {
         province: '',
         brand: '',
         car_type: '',
-        car_type_2: '',
+        car_type_2: '0',
         register_date: new Date(),
         driver: '',
         weight: '',
