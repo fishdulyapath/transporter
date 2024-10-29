@@ -38,7 +38,7 @@
                 </div>
                 <div class="field col-12">
                   <Button label="ค้นหา" icon="pi pi-play" class="w-auto p-button-info" @click="getReserveCarlist"></Button>
-                  <Button label="เพิ่มการจองรถ" icon="pi pi-plus" class="w-auto p-button-success ml-2" @click="openDialog()"></Button>
+          
                 </div>
               </div>
             </Panel>
