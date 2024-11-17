@@ -985,7 +985,7 @@ const goList = () => {
                 <ColumnGroup type="footer">
                   <Row>
 
-                    <Column footer="รวม" :colspan="11" footerStyle="text-align:right" />
+                    <Column footer="รวม" :colspan="12" footerStyle="text-align:right" />
                     <Column :footer="Utils.formatNumber(totalRevenue1)" footerStyle="text-align:right" />
                     <Column footer="" footerStyle="text-align:center" />
                   </Row>
@@ -1097,7 +1097,7 @@ const goList = () => {
                 <ColumnGroup type="footer">
                   <Row>
 
-                    <Column footer="รวม" :colspan="11" footerStyle="text-align:right" />
+                    <Column footer="รวม" :colspan="12" footerStyle="text-align:right" />
                     <Column :footer="Utils.formatNumber(totalRevenue2)" footerStyle="text-align:right" />
                     <Column footer="" footerStyle="text-align:center" />
                   </Row>
@@ -1210,7 +1210,7 @@ const goList = () => {
 
               <ColumnGroup type="footer">
                 <Row>
-                  <Column footer="รวม" :colspan="8" footerStyle="text-align:right" />
+                  <Column footer="รวม" :colspan="10" footerStyle="text-align:right" />
                   <Column :footer="Utils.formatNumber(totalFuel1)" footerStyle="text-align:right" />
                   <Column footer="" />
                 </Row>
