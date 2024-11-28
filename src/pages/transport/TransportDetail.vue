@@ -872,7 +872,7 @@ const goList = () => {
                     {{ Utils.formatNumber(data[field]) }}
                   </template>
                 </Column>
-                <Column field="allowance" header="ราคา" class="text-right">
+                <Column field="allowance" header="ราคา" class="text-right" >
                   <template #body="{ data, field }">
                     {{ Utils.formatNumber(data[field]) }}
                   </template>
@@ -1010,12 +1010,12 @@ const goList = () => {
             <Column field="to_place" header="ปลายทาง" />
             <Column field="item_name" header="สินค้า" />
 
-            <Column field="amount" header="จำนวน" class="text-right">
+            <Column field="amount" header="จำนวน" class="text-right" >
               <template #body="{ data, field }">
                 {{ Utils.formatNumber(data[field]) }}
               </template>
             </Column>
-            <Column field="unit_price" header="ลิตละ" class="text-right">
+            <Column field="unit_price" header="ลิตละ" class="text-right" >
               <template #body="{ data, field }">
                 {{ Utils.formatNumber(data[field]) }}
               </template>

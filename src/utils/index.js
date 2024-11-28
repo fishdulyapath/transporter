@@ -156,6 +156,33 @@ const getDocNoDate = (format) => {
 
     return format + "-" + [year, month, day].join("") + uuidv4();
 }
+
+
+const getDocNoDateUnknow = (format) => {
+
+    var d = new Date(),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return format + "-" + [year, month, day].join("") ;
+}
+
+const getDocNoDateTemp = (format) => {
+
+    var d = new Date(),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return format + "-" + [year, month, day].join("") + uuidv4();
+}
 const getYear = () => {
 
     var d = new Date(),
@@ -270,5 +297,6 @@ export default {
     getPriceTypeName,
     getPriceTypeName2,
     getStatusName,
-    getPriceTypeNameDash
+    getPriceTypeNameDash,
+    getDocNoDateUnknow
 }

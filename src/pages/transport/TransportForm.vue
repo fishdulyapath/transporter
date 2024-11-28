@@ -70,6 +70,10 @@ const expenses2 = ref([]);
 
 const supplierDetails = ref([]);
 
+const showDialogSuccess = ref(false);
+
+const doc_no_success = ref("")
+
 const cal_by = ref([]);
 
 onMounted(async () => {
@@ -86,7 +90,7 @@ onMounted(async () => {
   await getSupplier();
   if (route.params.id === "new") {
     storeApp.setPageTitle("สร้างเอกสารใหม่");
-    form_model.value.doc_no = Utils.getDocNoDate("TS");
+    form_model.value.doc_no = Utils.getDocNoDateUnknow("TS");
   } else {
     showDialogLoading.value = true;
     form_model.value.doc_no = route.params.id;
@@ -189,7 +193,7 @@ const getTSDocDetail = async () => {
     })
     .catch((err) => {
       console.log(err);
-      toast.add({ severity: "error", summary: "ดึงข้อมูลล้มเหลว", detail: res.message, life: 3000 });
+      toast.add({ severity: "error", summary: "ดึงข้อมูลล้มเหลว", detail: "ดึงข้อมูลล้มเหลว" , life: 3000 });
       showDialogLoading.value = false;
     });
 };
@@ -647,10 +651,9 @@ const saveTransportData = async (data) => {
     .then((res) => {
       console.log(res);
       if (res.success) {
-        toast.add({ severity: "success", summary: "บันทึกข้อมูลสำเร็จ", life: 5000 });
-        setTimeout(() => {
-          router.push("/");
-        }, 2000);
+        showDialogSuccess.value = true;
+        doc_no_success.value = res.message;
+
       } else {
         toast.add({ severity: "error", summary: "บันทึกข้อมูลล้มเหลว", detail: res.message, life: 5000 });
       }
@@ -660,6 +663,8 @@ const saveTransportData = async (data) => {
       toast.add({ severity: "error", summary: "บันทึกข้อมูลล้มเหลว", detail: res.message, life: 5000 });
     });
 };
+
+
 
 //updateData
 const updateData = async (data) => {
@@ -849,7 +854,7 @@ const goList = () => {
           <div class="grid formgrid p-fluid">
             <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">ใบปฏิบ้ติงาน</label>
-              <InputText type="text" v-model="form_model.doc_no" />
+              <InputText type="text" v-model="form_model.doc_no" readonly />
             </div>
             <div class="field mb-4 col-12 md:col-3">
               <label class="font-medium text-900">วันที่</label>
@@ -913,7 +918,7 @@ const goList = () => {
                     </Dropdown>
                   </template>
                 </Column>
-                <Column field="item_name" header="ชื่อสินค้า" style="width:20%">
+                <Column field="item_name" header="ชื่อสินค้า" style="min-width: 130px;">
                   <template #body="{ data, field }">
                     <InputText type="text" v-model="data[field]" fluid />
                   </template>
@@ -950,7 +955,7 @@ const goList = () => {
                     <Dropdown v-model="data[field]" fluid :options="data.destinationOptions" filter optionLabel="name" optionValue="name" placeholder="เลือกร้านปลายทาง" />
                   </template>
                 </Column>
-                <Column field="shipment_no" header="เลขที่ใบขน">
+                <Column field="shipment_no" header="เลขที่ใบขน" style="min-width: 100px;">
                   <template #body="{ data, field }">
                     <InputText type="text" v-model="data[field]" fluid />
                   </template>
@@ -962,12 +967,12 @@ const goList = () => {
                 </Column>
                 <Column field="unit_price" header="จำนวน">
                   <template #body="{ data, field }">
-                    <InputText type="number" v-model="data[field]" fluid class="text-right" />
+                    <InputText type="number" v-model="data[field]" fluid class="text-right" style="min-width: 90px;" />
                   </template>
                 </Column>
                 <Column field="allowance" header="ราคา">
                   <template #body="{ data, field }">
-                    <InputText type="number" v-model="data[field]" fluid class="text-right" />
+                    <InputText type="number" v-model="data[field]" fluid class="text-right" style="min-width: 90px;" />
                   </template>
                 </Column>
                 <Column field="revenue" header="รายได้">
@@ -1064,7 +1069,7 @@ const goList = () => {
                 </Column>
                 <Column field="shipment_no" header="เลขที่ใบขน">
                   <template #body="{ data, field }">
-                    <InputText type="text" v-model="data[field]" fluid />
+                    <InputText type="text" v-model="data[field]" fluid style="min-width: 100px;" />
                   </template>
                 </Column>
                 <Column field="calculation_type" header="หน่วย">
@@ -1074,12 +1079,12 @@ const goList = () => {
                 </Column>
                 <Column field="unit_price" header="จำนวน">
                   <template #body="{ data, field }">
-                    <InputText type="number" v-model="data[field]" fluid class="text-right" />
+                    <InputText type="number" v-model="data[field]" fluid class="text-right" style="min-width: 90px;" />
                   </template>
                 </Column>
                 <Column field="allowance" header="ราคา">
                   <template #body="{ data, field }">
-                    <InputText type="number" v-model="data[field]" fluid class="text-right" />
+                    <InputText type="number" v-model="data[field]" fluid class="text-right" style="min-width: 90px;" />
                   </template>
                 </Column>
                 <Column field="revenue" header="รายได้">
@@ -1136,30 +1141,30 @@ const goList = () => {
                   <Dropdown v-model="data[field]" fluid :options="supplierDetails" filter optionLabel="name" optionValue="code" placeholder="เลือกเจ้าหนี้" />
                 </template>
               </Column>
-              <Column field="fuel_doc_no" header="เลขที่ใบแจ้งหนี้" style="width:8%">
+              <Column field="fuel_doc_no" header="เลขที่ใบแจ้งหนี้" style="min-width: 110px;">
                 <template #body="{ data, field }">
                   <InputText type="text" v-model="data[field]" fluid />
                 </template>
               </Column>
- 
+
 
               <Column field="route_code" header="เส้นทาง">
-                  <template #body="{ data, field }">
-                    <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="route_label" optionValue="code" placeholder="เลือกเส้นทาง"
-                      @change="onRouteChangeFuel(data)">
+                <template #body="{ data, field }">
+                  <Dropdown v-model="data[field]" fluid :options="routeDetails" filter optionLabel="route_label" optionValue="code" placeholder="เลือกเส้นทาง"
+                    @change="onRouteChangeFuel(data)">
 
-                      <template #option="{ option }">
+                    <template #option="{ option }">
 
-                        <span>{{ option.route_label }}</span>
-                      </template>
-                      <template #value="{ value }">
+                      <span>{{ option.route_label }}</span>
+                    </template>
+                    <template #value="{ value }">
 
-                        <span v-if="value != ''">{{ value }}</span>
-                        <span v-else>เลือกเส้นทาง</span>
-                      </template>
-                    </Dropdown>
-                  </template>
-                </Column>
+                      <span v-if="value != ''">{{ value }}</span>
+                      <span v-else>เลือกเส้นทาง</span>
+                    </template>
+                  </Dropdown>
+                </template>
+              </Column>
               <Column field="from_place" header="ต้นทาง">
               </Column>
               <Column field="to_place" header="ปลายทาง">
@@ -1187,12 +1192,12 @@ const goList = () => {
                 </template>
               </Column>
 
-              <Column field="amount" header="จำนวน">
+              <Column field="amount" header="จำนวน" style="min-width: 90px;">
                 <template #body="{ data, field }">
                   <InputText type="number" v-model="data[field]" class="text-right" />
                 </template>
               </Column>
-              <Column field="unit_price" header="ลิตละ">
+              <Column field="unit_price" header="ลิตละ" style="min-width: 90px;">
                 <template #body="{ data, field }">
                   <InputText type="number" v-model="data[field]" class="text-right" />
                 </template>
@@ -1269,6 +1274,14 @@ const goList = () => {
           </div>
         </div>
       </div>
+      <Dialog v-model:visible="showDialogSuccess" :style="{ width: '350px' }" :modal="true" :closable="false">
+        <div class="text-center">
+          <h4>{{ doc_no_success }}</h4>
+        </div>
+        <template #footer>
+          <Button label="ยืนยัน" icon="pi pi-check" class="p-button-success" @click="goList" />
+        </template>
+      </Dialog>
       <Dialog v-model:visible="showDialogLoading" :style="{ width: '350px' }" :modal="true" :closable="false">
         <div class="text-center">
           <i class="pi pi-spin pi-spinner" style="font-size: 5rem"> </i>
